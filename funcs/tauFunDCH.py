@@ -2130,7 +2130,7 @@ def catToNumber3L(cat) :
                'ete':28, 'etm':29, 'ett':30, 
                'mme':31, 'mmm':32, 'mmt':33, 
                'mte':34, 'mtm':35, 'mtt':36, 
-               'tte':37, 'ttm':38, 'ttt':39}
+               'tte':37, 'ttm':38, 'ttt':39,'':0}
     return number[cat]
 
 def catToNumberW(cat) :
@@ -2145,7 +2145,7 @@ def numberToCat3L(number) :
                28:'ete', 29:'etm', 30:'ett', 
                31:'mme', 32:'mmm', 33:'mmt', 
                34:'mte', 35:'mtm', 36:'mtt',
-               37:'tte', 38:'ttm', 39:'ttt'}
+               37:'tte', 38:'ttm', 39:'ttt',0:''}
     return cat[number]
 
 
@@ -2210,6 +2210,11 @@ def simpleDCHpairing(entry, goodEleList, goodMuList, goodTauList):
             elif nEle == 1:
                 lep3 = goodEleList[0]
                 cat += 'e'
+        elif nEle ==1 and nMu==1 and nTau==1:
+            cat = 'emt'
+            lep1 = goodEleList[0]
+            lep2 = goodMuList[0]
+            lep3 = goodTauList[0]
 
     elif nEle + nMu + nTau == 4:
         if nEle == 4:
@@ -2241,44 +2246,64 @@ def simpleDCHpairing(entry, goodEleList, goodMuList, goodTauList):
             elif nTau == 1:
                 lep4 = goodTauList[0]
                 cat += 't'
-        elif nMu == 3:
-            cat = 'mmm'
+        elif nEle ==2 and nMu ==2:
+            cat = 'eemm'
+            lep1 = goodEleList[0]
+            lep2 = goodEleList[1]
+            lep3 = goodMuList[0]
+            lep4 = goodMuList[1]
+        elif nEle ==2 and nMu ==1 and nTau ==1:
+            cat = 'eemt'
+            lep1 = goodEleList[0]
+            lep2 = goodEleList[1]
+            lep3 = goodMuList[0]
+            lep4 = goodTauList[0]
+        elif nEle ==2 and nTau ==2:
+            cat = 'eett'
+            lep1 = goodEleList[0]
+            lep2 = goodEleList[1]
+            lep3 = goodTauList[0]
+            lep4 = goodTauList[1]
+        elif nMu ==3 and nEle ==1:
+            cat = 'emmm'
+            lep1 = goodEleList[0]
+            lep2 = goodMuList[0]
+            lep3 = goodMuList[1]
+            lep4 = goodMuList[2]
+        elif nMu ==3 and nTau ==1:
+            cat = 'mmmt'
             lep1 = goodMuList[0]
             lep2 = goodMuList[1]
             lep3 = goodMuList[2]
-            if nEle == 1:
-                lep4 = goodEleList[0]
-                cat += 'e'
-            elif nTau == 1:
-                lep4 = goodTauList[0]
-                cat += 't'                             
-        elif nTau == 3:
-            cat = 'ttt'
-            lep1 = goodTauList[0]
-            lep2 = goodTauList[1]
-            lep3 = goodTauList[2]
-            if nMu == 1:
-                lep4 = goodMuList[0]
-                cat += 'm'
-            elif nEle == 1:
-                lep4 = goodEleList[0]
-                cat += 'e'
-        elif nEle == 2:
-            cat = 'ee'
-            lep1 = goodEleList[0]
-            lep2 = goodEleList[1]
-            if nMu == 2:
-                cat += 'mm'
-                lep3 = goodMuList[0]
-                lep4 = goodMuList[1]
-            elif nTau == 2:
-                cat += 'tt'
-                lep3 = goodTauList[0]
-                lep4 = goodTauList[1]
-        elif nMu == 2 and nTau == 2:
-            cat == 'mmtt'
+            lep4 = goodTauList[0]
+        elif nMu ==2 and nTau ==2:
+            cat = 'mmtt'
             lep1 = goodMuList[0]
             lep2 = goodMuList[1]
+            lep3 = goodTauList[0]
+            lep4 = goodTauList[1]
+        elif nMu ==2 and nEle ==1 and nTau ==1:
+            cat = 'emmt'
+            lep1 = goodEleList[0]
+            lep2 = goodMuList[0]
+            lep3 = goodMuList[1]
+            lep4 = goodTauList[0]
+        elif nTau ==3 and nMu ==1:
+            cat = 'mttt'
+            lep1 = goodMuList[0]
+            lep2 = goodTauList[0]
+            lep3 = goodTauList[1]
+            lep4 = goodTauList[2]
+        elif nTau ==3 and nEle ==1:
+            cat = 'ettt'
+            lep1 = goodEleList[0]
+            lep2 = goodTauList[0]
+            lep3 = goodTauList[1]
+            lep4 = goodTauList[2]
+        elif nTau ==2 and nEle ==1 and nMu ==1:
+            cat = 'emtt'
+            lep1 = goodEleList[0]
+            lep2 = goodMuList[0]
             lep3 = goodTauList[0]
             lep4 = goodTauList[1]
     return lep1, lep2, lep3, lep4, cat

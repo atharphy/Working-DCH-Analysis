@@ -251,6 +251,7 @@ for cat in cats:
 
 for count, e in enumerate( inTree) :
     #if count != 738: continue #to run only over a single event
+    #if count <=710000: continue
     if count % countMod == 0 :
         print(("Count={0:d}".format(count)))
         if count >= 10000 : countMod = 10000
@@ -258,6 +259,7 @@ for count, e in enumerate( inTree) :
     printOn=False
 
     gen_cat = ''
+    br_weight = 1
     if MC:
         '''if 'Hpp' in  args.nickName :
            #if 't' not in GF.printGenDecayMode(e, isPrompt=True): continue
@@ -269,7 +271,7 @@ for count, e in enumerate( inTree) :
            #GF.printMC(e)
            #print ('Gen channel is', GF.printGenDecayMode(e))
         '''
-        br_weight = 1
+        #br_weight = 1
         if "Hpp" in args.nickName:
             gen_cat = GF.printGenDecayMode(e,printOn=False,isPrompt=True)
             #GenCat[gen_cat] += 1

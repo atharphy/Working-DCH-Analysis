@@ -19,7 +19,7 @@ class SFs():
         self.eff_mcH = root.std.map("string", root.TGraphAsymmErrors)()
         EtaBins=[]
         if "Mu" in str(inputFile) :   EtaBins=["Lt0p9", "0p9to1p2","1p2to2p1","Gt2p1"]
-        if "El" in str(inputFile) :   EtaBins=["Lt1p48", "1p48to2p1"]
+        if "El" in str(inputFile) :   EtaBins=["Lt1p0", "1p0to1p48", "1p48to1p65", "1p65to2p1", "Gt2p1"]
         
         #print inputRootFile
         self.fileIn = root.TFile(self.inputRootFile,"read")  
@@ -113,15 +113,55 @@ class SFs():
         if whatisit == "mc" : eff_map=self.eff_mcH #EtaLabel = "ZMass"+EtaLabel+"_MC"
         if whatisit == "data" : eff_map=self.eff_dataH #EtaLabel = "ZMass"+EtaLabel+"_MC"
         #if whatisit == "data" : EtaLabel = "ZMass"+EtaLabel+"_Data"
-        #print "and inside FintPtBin",EtaLabel,self.eff_mcH[EtaLabel].GetN(),EtaLabel,eff_map[EtaLabel].GetN()
+        #print ("and inside FintPtBin",EtaLabel,self.eff_mcH[EtaLabel].GetN(),EtaLabel,eff_map[EtaLabel].GetN())
 
         Npoints = eff_map[EtaLabel].GetN()
         ptMAX, ptMIN = 0,0
+        '''
         try : ptMAX = (eff_map[EtaLabel].GetX()[Npoints-1])+(eff_map[EtaLabel].GetErrorXhigh(Npoints-1))
+        except KeyError: return -99
         except IndexError : return -99
 
         try : ptMIN = (eff_map[EtaLabel].GetX()[0])-(eff_map[EtaLabel].GetErrorXlow(0))
+        except KeyError: return -99
         except IndexError : return -99
+        '''
+        try:
+            # Ensure EtaLabel exists in eff_map
+            if EtaLabel not in eff_map:
+                raise ValueError(f"Key '{EtaLabel}' not found in eff_map.")
+
+            eta_obj = eff_map[EtaLabel]
+
+            # Ensure eta_obj is not None
+            if eta_obj is None:
+                raise ValueError(f"eff_map['{EtaLabel}'] is None.")
+
+            # Ensure Npoints-1 is within valid range
+            Npoints = eta_obj.GetN()
+            if Npoints <= 0:
+                raise ValueError("Npoints is non-positive.")
+            if Npoints-1 >= eta_obj.GetN():
+                raise IndexError(f"Index {Npoints-1} is out of range for GetN() which is {eta_obj.GetN()}.")
+
+            # Safely access elements
+            x_array = eta_obj.GetX()
+            if x_array is None:
+                raise ValueError(f"GetX() returned None for eff_map['{EtaLabel}'].")
+
+            # Ensure GetErrorXhigh(Npoints-1) is valid
+            error_x_high = eta_obj.GetErrorXhigh(Npoints-1)
+            if error_x_high is None:
+                raise ValueError(f"GetErrorXhigh({Npoints-1}) returned None for eff_map['{EtaLabel}'].")
+
+            # Calculate ptMAX
+            ptMAX = x_array[Npoints-1] + error_x_high
+            #print(f"ptMAX: {ptMAX}")
+
+        except ValueError: return -99
+        except IndexError: return -99
+        except Exception: return -99
+
         #print Npoints, "Npoints for  ===============>",eff_map[EtaLabel].GetN(),EtaLabel,Pt,eff_map[EtaLabel].GetN(),whatisit,ptMAX,ptMIN,eff_map[EtaLabel].GetXaxis().FindBin(Pt)
         if Pt >= ptMAX : return Npoints
         elif Pt < ptMIN :

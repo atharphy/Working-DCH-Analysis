@@ -258,6 +258,7 @@ for count, e in enumerate( inTree) :
     printOn=False
 
     gen_cat = ''
+    br_weight = 1
     if MC:
         '''if 'Hpp' in  args.nickName :
            if 't' not in GF.printGenDecayMode(e): continue
@@ -275,7 +276,7 @@ for count, e in enumerate( inTree) :
             #print("Gen cat is : ",gen_cat)
             #GF.printMC(e)
             #----for testing-----
-            br_weight = 1
+            #br_weight = 1
             if gen_cat[:2] == 'ee' or gen_cat[:2] == 'mm' or gen_cat[:2] == 'tt':
                 br_weight = br_weight*3/2
             elif gen_cat[:2] == 'em' or gen_cat[:2] == 'et' or gen_cat[:2] == 'mt':

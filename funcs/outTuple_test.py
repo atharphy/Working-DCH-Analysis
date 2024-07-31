@@ -43,11 +43,11 @@ class outTuple() :
             ROOT.gROOT.LoadMacro(macropath_4tau + baseName+".cc" + " ++g")
         self.kUndefinedDecayType, self.kTauToHadDecay,  self.kTauToElecDecay, self.kTauToMuDecay = 0, 1, 2, 3
 
-        '''
+        
         self.sf_EleTrig = ''
         self.sf_EleTrig = SF.SFs()
         #Electron_RunUL2016postVFP_Ele25_EtaLt2p1.root  Electron_RunUL2016preVFP_Ele25_EtaLt2p1.root   Electron_RunUL2017_Ele35.root                  Electron_RunUL2018_Ele35.root
-        self.TriggerSF={'dir' : './', 'fileMuon' : 'Muon/SingleMuon_Run2018_IsoMu24orIsoMu27.root', 'fileElectron' : 'Electron_RunUL2018_Ele35.root'}
+        self.TriggerSF={'dir' : '../tools/', 'fileMuon' : 'Muon/SingleMuon_Run2018_IsoMu24orIsoMu27.root', 'fileElectron' : 'Electron_RunUL2018_Ele35.root'}
         if '2016pre' in str(era):  self.TriggerSF={'dir' : './', 'fileMuon' : 'Muon/SingleMuon_Run2018_IsoMu24orIsoMu27.root', 'fileElectron' : 'Electron_RunUL2016preVFP_Ele25_EtaLt2p1.root'}
         if '2016' in str(era) and 'pre' not in str(era):  self.TriggerSF={'dir' : './', 'fileMuon' : 'Muon/SingleMuon_Run2018_IsoMu24orIsoMu27.root', 'fileElectron' : 'Electron_RunUL2016postVFP_Ele25_EtaLt2p1.root'}
         if '2017' in str(era) :  self.TriggerSF={'dir' : './', 'fileMuon' : 'Muon/SingleMuon_Run2018_IsoMu24orIsoMu27.root', 'fileElectron' : 'Electron_RunUL2017_Ele35.root'}
@@ -56,7 +56,7 @@ class outTuple() :
         self.sf_EleTrig.ScaleFactor("{0:s}{1:s}".format(self.TriggerSF['dir'],self.TriggerSF['fileElectron']))
         
         self.evaluatorPU=''
-        self.fnamePU = "./puWeights_{0:s}.json.gz".format(str(era))
+        self.fnamePU = "../tools/puWeights_{0:s}.json.gz".format(str(era))
         if self.fnamePU.endswith(".json.gz"):
             import gzip
             with gzip.open(self.fnamePU,'rt') as file:
@@ -67,7 +67,7 @@ class outTuple() :
         # Tau Decay types
 
         self.evaluator=''
-        self.fname = "./muon_Z_{0:s}.json.gz".format(str(era))
+        self.fname = "../tools/muon_Z_{0:s}.json.gz".format(str(era))
         if self.fname.endswith(".json.gz"):
             import gzip
             with gzip.open(self.fname,'rt') as file:
@@ -77,7 +77,7 @@ class outTuple() :
             self.evaluator = _core.CorrectionSet.from_file(self.fname)
         # Tau Decay types
         self.evaluatorEl=''
-        self.fnameEl = "./electron_{0:s}.json.gz".format(str(era))
+        self.fnameEl = "../tools/electron_{0:s}.json.gz".format(str(era))
         if self.fnameEl.endswith(".json.gz"):
             import gzip
             with gzip.open(self.fnameEl,'rt') as file:
@@ -90,7 +90,7 @@ class outTuple() :
         # TrackerMuon Reconstruction UL scale factor
         #self.valsf = self.evaluator["NUM_MediumID_DEN_TrackerMuons"].evaluate("2017_UL", 1.1, 30.0, "sf")
         #print("sf 1 is: " + str(self.valsf))
-        '''
+        
         ########### JetMet systematics
         #self.listsyst=['njets', 'nbtag', 'jpt', 'jeta', 'jflavour','MET_T1_pt', 'MET_T1_phi', 'MET_pt', 'MET_phi', 'MET_T1Smear_pt', 'MET_T1Smear_phi']
         self.jessyst=['_nom']
@@ -204,10 +204,13 @@ class outTuple() :
         self.nPVGood              = array('l',[0])
         self.cat              = array('l',[0])
         self.gen_cat              = array('l',[0])
-        self.brWeight           = array('l',[0])
+        self.brWeight           = array('f',[0])
         self.weight           = array('f',[0])
         self.weightPU           = array('f',[0])
         self.weightPUtrue           = array('f',[0])
+        self.weightPUtruejson           = array('f',[0])
+        self.weightPUtruejson_up           = array('f',[0])
+        self.weightPUtruejson_down           = array('f',[0])
         self.LHEweight        = array('f',[0])
         self.Generator_weight = array('f',[0])
         self.LHE_Njets        = array('l',[0])
@@ -216,7 +219,19 @@ class outTuple() :
         self.whichTriggerWord  = array('l',[0])         
         self.whichTriggerWordSubL  = array('l',[0])         
         self.LHEScaleWeights        = array('f',[1]*9)
-        
+        self.IDSF_1   = array('f',[0])
+        self.ISOSF_1   = array('f',[0])
+        self.TrigSF_1   = array('f',[0])
+        self.IDSF_2   = array('f',[0])
+        self.ISOSF_2   = array('f',[0])
+        self.TrigSF_2   = array('f',[0])
+        self.IDSF_3   = array('f',[0])
+        self.ISOSF_3   = array('f',[0])
+        self.TrigSF_3   = array('f',[0])
+        self.IDSF_4   = array('f',[0])
+        self.ISOSF_4   = array('f',[0])
+        self.TrigSF_4   = array('f',[0])
+
         self.nGoodElectron    = array('l',[0])
         self.nGoodMuon        = array('l',[0])
         self.nGoodTau         = array('l',[0])
@@ -512,10 +527,14 @@ class outTuple() :
         self.t.Branch('nPVGood',              self.nPVGood,               'nPVGood/I' )
         self.t.Branch('cat',              self.cat,               'cat/I' )
         self.t.Branch('gen_cat',              self.gen_cat,               'gen_cat/I' )
-        self.t.Branch('brWeight',              self.brWeight,               'brWeight/I' )
+        self.t.Branch('brWeight',              self.brWeight,               'brWeight/F' )
         self.t.Branch('weight',           self.weight,            'weight/F' )
         self.t.Branch('weightPU',           self.weightPU,            'weightPU/F' )
         self.t.Branch('weightPUtrue',           self.weightPUtrue,            'weightPUtrue/F' )
+        self.t.Branch('weightPUtruejson',           self.weightPUtruejson,            'weightPUtruejson/F' )
+        self.t.Branch('weightPUtruejson_up',           self.weightPUtruejson_up,            'weightPUtruejson_up/F' )
+        self.t.Branch('weightPUtruejson_down',           self.weightPUtruejson_down,            'weightPUtruejson_down/F' )
+        
         self.t.Branch('LHEweight',        self.LHEweight,         'LHEweight/F' )
         self.t.Branch('LHE_Njets',        self.LHE_Njets,         'LHE_Njets/I' )
         self.t.Branch('LHEScaleWeights',        self.LHEScaleWeights,         'LHEScaleWeights[9]/F' )
@@ -524,7 +543,19 @@ class outTuple() :
         self.t.Branch('muonTriggerWord',      self.muonTriggerWord,  'muonTriggerWord/I' )
         self.t.Branch('whichTriggerWord',      self.whichTriggerWord,  'whichTriggerWord/I' )
         self.t.Branch('whichTriggerWordSubL',      self.whichTriggerWordSubL,  'whichTriggerWordSubL/I' )
-        
+        self.t.Branch('IDSF_1',           self.IDSF_1,            'IDSF_1/F' )
+        self.t.Branch('ISOSF_1',           self.ISOSF_1,            'ISOSF_1/F' )
+        self.t.Branch('TrigSF_1',           self.TrigSF_1,            'TrigSF_1/F' )
+        self.t.Branch('IDSF_2',           self.IDSF_2,            'IDSF_2/F' )
+        self.t.Branch('ISOSF_2',           self.ISOSF_2,            'ISOSF_2/F' )
+        self.t.Branch('TrigSF_2',           self.TrigSF_2,            'TrigSF_2/F' )
+        self.t.Branch('IDSF_3',           self.IDSF_3,            'IDSF_3/F' )
+        self.t.Branch('ISOSF_3',           self.ISOSF_3,            'ISOSF_3/F' )
+        self.t.Branch('TrigSF_3',           self.TrigSF_3,            'TrigSF_3/F' )
+        self.t.Branch('IDSF_4',           self.IDSF_4,            'IDSF_4/F' )
+        self.t.Branch('ISOSF_4',           self.ISOSF_4,            'ISOSF_4/F' )
+        self.t.Branch('TrigSF_4',           self.TrigSF_4,            'TrigSF_4/F' )
+
         self.t.Branch('nGoodElectron',    self.nGoodElectron,     'nGoodElectron/I' )
         self.t.Branch('nGoodMuon',        self.nGoodMuon,         'nGoodMuon/I' )
         self.t.Branch('nGoodTau',        self.nGoodTau,         'nGoodTau/I' )
@@ -1562,6 +1593,18 @@ class outTuple() :
             self.muonTriggerWord[0] = 0
             for i, bit in enumerate(bits) :
                 if bit : self.muonTriggerWord[0] += 2**i
+
+        yearin = era
+        if isMC :
+            hlt_pu = "Collisions18_UltraLegacy_goldenJSON"
+            if '2016' in era : hlt_pu='Collisions16_UltraLegacy_goldenJSON'
+            if '2017' in era : hlt_pu='Collisions17_UltraLegacy_goldenJSON'
+            self.weightPUtruejson[0] = self.evaluatorPU[hlt_pu].evaluate(entry.Pileup_nTrueInt, "nominal" )
+            self.weightPUtruejson_up[0] = self.evaluatorPU[hlt_pu].evaluate(entry.Pileup_nTrueInt, "up" )
+            self.weightPUtruejson_down[0] = self.evaluatorPU[hlt_pu].evaluate(entry.Pileup_nTrueInt, "down" )
+
+            if '2016' in era and 'pre' in era : yearin='2016preVFP'
+            if '2016' in era and 'pre' not in era : yearin='2016postVFP'
 
         jl1 = idx_DCH1[0]
         jl2 = idx_DCH1[1]
@@ -2742,6 +2785,11 @@ class outTuple() :
         else : 
             self.tN[SystIndex-1].Fill()
 
+        self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(),  isMC)
+        self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(),  isMC)
+        self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
+        self.IDSF_4[0], self.ISOSF_4[0], self.TrigSF_4[0] = self.getIDISOTrigSF(era, yearin, cat[3], Lep4.Pt(), Lep4.Eta(), Lep4.Phi(),  isMC)
+
         return
 
     def Fill3L(self, entry, SVFit, cat,gen_cat,br_weight, idx_DCH1, jl3, isMC, era, doUncertainties=False ,  met_pt=-99, met_phi=-99, systIndex=0, tMass=[], tPt=[], eMass=[], ePt=[], mMass=[], mPt=[], proc="EOY") :
@@ -3069,6 +3117,18 @@ class outTuple() :
             self.muonTriggerWord[0] = 0
             for i, bit in enumerate(bits) :
                 if bit : self.muonTriggerWord[0] += 2**i
+
+        yearin = era
+        if isMC :
+        	hlt_pu = "Collisions18_UltraLegacy_goldenJSON"
+        	if '2016' in era : hlt_pu='Collisions16_UltraLegacy_goldenJSON'
+        	if '2017' in era : hlt_pu='Collisions17_UltraLegacy_goldenJSON'
+        	self.weightPUtruejson[0] = self.evaluatorPU[hlt_pu].evaluate(entry.Pileup_nTrueInt, "nominal" )
+        	self.weightPUtruejson_up[0] = self.evaluatorPU[hlt_pu].evaluate(entry.Pileup_nTrueInt, "up" )
+        	self.weightPUtruejson_down[0] = self.evaluatorPU[hlt_pu].evaluate(entry.Pileup_nTrueInt, "down" )
+
+        	if '2016' in era and 'pre' in era : yearin='2016preVFP'
+        	if '2016' in era and 'pre' not in era : yearin='2016postVFP'
                 
                 
         jl1 = idx_DCH1[0]
@@ -3840,6 +3900,7 @@ class outTuple() :
             leplist.append(Lep3)
             leplist.append(Lep4)
         '''
+
         if doUncertainties: 
                 ## this is not done from within ZH and the correctallMET function
                 for i, v in enumerate(self.allsystMET) : 
@@ -3964,6 +4025,11 @@ class outTuple() :
         else : 
             self.tN[SystIndex-1].Fill()
 
+        self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(),  isMC)
+        self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(),  isMC)
+        self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
+        #self.IDSF_4[0], self.ISOSF_4[0], self.TrigSF_4[0] = self.getIDISOTrigSF(era, yearin, cat[3], Lep4.Pt(), Lep4.Eta(), Lep4.Phi(),  isMC)
+
         return
 
 
@@ -3979,6 +4045,33 @@ class outTuple() :
         self.weightPUtrue[0] = weight
         #print("outTuple.setWeight() weight={0:f}".format(weight))
         return
+
+    def getIDISOTrigSF(self, era, yearin, lep_flav, lep_pt, lep_eta, lep_phi, isMC):
+    	id_sf=1.
+    	iso_sf=1.
+    	trig_sf=1. 
+    	if not isMC : return id_sf, iso_sf, trig_sf
+    	if lep_flav == 'e':
+            if lep_pt > 20 : id_sf = self.evaluatorEl["UL-Electron-ID-SF"].evaluate(yearin, "sf" , "RecoAbove20", lep_eta, lep_pt )
+            if lep_pt > 20 : iso_sf = self.evaluatorEl["UL-Electron-ID-SF"].evaluate(yearin, "sf" , "wp90iso", lep_eta, lep_pt )		
+            eff_trig_d =  self.sf_EleTrig.get_EfficiencyData(lep_pt,lep_eta)
+            eff_trig_mc =  self.sf_EleTrig.get_EfficiencyMC(lep_pt,lep_eta)
+            if eff_trig_mc !=0 : trig_sf = float(eff_trig_d/eff_trig_mc)
+    	elif lep_flav == 'm':	
+            if lep_pt> 15 : id_sf = self.evaluator["NUM_TightID_DEN_TrackerMuons"].evaluate("{0:s}_UL".format( str(yearin)), abs(lep_eta), lep_pt, "sf")
+            if lep_pt> 15 : iso_sf = self.evaluator["NUM_TightRelIso_DEN_TightIDandIPCut"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")
+            if era == '2016' : 
+                if lep_pt > 26  : trig_sf = self.evaluator["NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")
+                #NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight  
+            if era =='2017' :  
+                if lep_pt > 29 : trig_sf = self.evaluator["NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")
+            if era =='2018' :  
+                if lep_pt > 26 : trig_sf = self.evaluator["NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")  ### for 2018 the json Veto only 24 SF..but we have used the HLT27
+    	#print (id_sf, iso_sf, trig_sf)
+    	return id_sf, iso_sf, trig_sf
+				
+
+    	
 
     def FillTree(self) :
         self.t.Fill()
