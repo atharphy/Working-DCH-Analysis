@@ -20,8 +20,80 @@ with io.open('cuts.yaml', 'r') as stream:
     selections = yaml.load(stream, Loader=yaml.Loader)
 print("Using selections:\n", selections)
 
+#-------------------for cutflow---------------------
+def pt_cut(pt, min_pt):
+    if pt > min_pt: return 1
+    else: return 0
+def eta_cut(eta, max_eta):
+    if eta < max_eta: return 1
+    else: return 0
+def dxy_cut(dxy, max_dxy):
+    if dxy < max_dxy: return 1
+    else: return 0
+def dz_cut(dz, min_dz):
+    if dz < min_dz: return 1
+    else: return 0
+def iso_cut(iso, min_iso):
+    if iso < min_iso: return 1
+    else: return 0
+def id_cut(value):
+    if value: return 1
+    else: return 0
+def ele_losthits_cut(value, ref):
+    if ord(chr(value)) < ref: return 1
+    else: return 0
+def ele_convveto_cut(value):
+    if value: return 1
+    else: return 0
+def bitmap_cuts(value, ref):
+    if ord(chr(value)) & ref > 0: return 1
+    else: return 0
 
+# Apply all cuts except one (N-1 cut)
+def n_minus_1_cut(cut_yields, exclude_index):
+    """Apply all cuts except the one at exclude_index."""
+    anti_cut_yield = 1
+    for i, cut_yield in enumerate(cut_yields):
+        if i != exclude_index:  # Apply all cuts except the one at exclude_index
+            anti_cut_yield *= cut_yield
+    return anti_cut_yield
 
+# Example: Main function to run the N-1 cutflow
+def run_n_minus_1_cutflow(e, lep_flav, hist):
+    
+    if lep_flav == 'e':
+        ee = selections['et']
+        for j in range(e.nElectron):
+            cut_yields = [pt_cut(e.Electron_pt[j], ee['ele_pt']), eta_cut(e.Electron_eta[j], ee['ele_eta']), dxy_cut(e.Electron_dxy[j], ee['ele_dxy']), dz_cut(e.Electron_dz[j], ee['ele_dz']), iso_cut(e.Electron_pfRelIso03_all[j], ee['ele_iso']), id_cut(e.Electron_mvaFall17V2noIso_WP90[j]), ele_losthits_cut(e.Electron_lostHits[j], ee['ele_lostHits']), ele_convveto_cut(e.Electron_convVeto[j])]  # List of cuts to apply
+            # Loop over each cut, applying N-1 cuts each time
+            for i in range(len(cut_yields)):
+                n_minus_1_cutflow = 0
+                n_minus_1_cutflow = n_minus_1_cut(cut_yields, i)
+                if n_minus_1_cutflow: 
+                    hist.Fill(i)
+    elif lep_flav == 'm':
+        mm = selections['mt']
+        for j in range(e.nMuon):
+            cut_yields = [pt_cut(e.Muon_pt[j], mm['mu_pt']), eta_cut(e.Muon_eta[j], mm['mu_eta']), dxy_cut(e.Muon_dxy[j], mm['mu_dxy']), dz_cut(e.Muon_dz[j], mm['mu_dz']), iso_cut(e.Muon_pfRelIso04_all[j], mm['mu_iso']), id_cut(e.Muon_tightId[j])]  # List of cuts to apply
+            # Loop over each cut, applying N-1 cuts each time
+            for i in range(len(cut_yields)):
+                n_minus_1_cutflow = 0
+                n_minus_1_cutflow = n_minus_1_cut(cut_yields, i)
+                if n_minus_1_cutflow:
+                    hist.Fill(i)
+    elif lep_flav == 't':
+        tt = selections['tt']
+        for j in range(e.nTau):
+            cut_yields = [pt_cut(e.Tau_pt[j], tt['tau_pt']), eta_cut(e.Tau_eta[j], tt['tau_eta']), dz_cut(e.Tau_dz[j], tt['tau_dz']), bitmap_cuts(e.Tau_idDeepTau2017v2p1VSjet[j], tt['tau_vJet']), bitmap_cuts(e.Tau_idDeepTau2017v2p1VSe[j], tt['tau_vEle']), bitmap_cuts(e.Tau_idDeepTau2017v2p1VSmu[j], tt['tau_vMu']) ]  # List of cuts to apply
+            # Loop over each cut, applying N-1 cuts each time
+            for i in range(len(cut_yields)):
+                n_minus_1_cutflow = 0
+                n_minus_1_cutflow = n_minus_1_cut(cut_yields, i)
+                if n_minus_1_cutflow:
+                    hist.Fill(i)
+    return hist
+
+#----------------------------------------------------
 def goodTrigger(e, year):
     trig = selections['trig']
     if not (trig['singleLepton'] or trig['doubleLepton']) : return True
@@ -45,7 +117,7 @@ def goodTrigger(e, year):
 
     else :
         print(("Invalid year={0:d} in goodTrigger()".format(year)))
-        return False
+        returnelealse
     
     return (trig['singleLepton'] and goodSingle) or (trig['doubleLepton'] and goodDouble)  
 
@@ -195,11 +267,11 @@ def makeGoodTauListWjets(channel, entry, muIndex,  printOn=False) :
         phi2, eta2 = entry.Electron_phi[muIndex], entry.Electron_eta[muIndex]
     for j in range(entry.nTau):    
         # apply tau(h) selections 
-        if channel=='mnu' and llDR(entry.Tau_eta[j], entry.Tau_phi[j], eta2, phi2) > 0.2 or int(ord(chr(entry.Tau_idDeepTau2017v2p1VSmu[j]))) > 0 :  
-            #print 'failed dR or antiMu', llDR(entry.Tau_eta[j], entry.Tau_phi[j], eta2, phi2),  entry.Tau_pt[j], 'antiMu', int(ord(chr(entry.Tau_idDeepTau2017v2p1VSmu[j]))
+        if channel=='mnu' and DRobj(entry.Tau_eta[j], entry.Tau_phi[j], eta2, phi2) > 0.2 or int(ord(chr(entry.Tau_idDeepTau2017v2p1VSmu[j]))) > 0 :  
+            #print 'failed dR or antiMu', DRobj(entry.Tau_eta[j], entry.Tau_phi[j], eta2, phi2),  entry.Tau_pt[j], 'antiMu', int(ord(chr(entry.Tau_idDeepTau2017v2p1VSmu[j]))
             tauList.append(j)
-        if channel=='enu' and llDR(entry.Tau_eta[j], entry.Tau_phi[j], eta2, phi2) > 0.2 or int(ord(chr(entry.Tau_idDeepTau2017v2p1VSe[j]))) > 0 :  
-            #print 'failed dR or antiMu', llDR(entry.Tau_eta[j], entry.Tau_phi[j], eta2, phi2),  entry.Tau_pt[j], 'antiMu', int(ord(chr(entry.Tau_idDeepTau2017v2p1VSmu[j])))
+        if channel=='enu' and DRobj(entry.Tau_eta[j], entry.Tau_phi[j], eta2, phi2) > 0.2 or int(ord(chr(entry.Tau_idDeepTau2017v2p1VSe[j]))) > 0 :  
+            #print 'failed dR or antiMu', DRobj(entry.Tau_eta[j], entry.Tau_phi[j], eta2, phi2),  entry.Tau_pt[j], 'antiMu', int(ord(chr(entry.Tau_idDeepTau2017v2p1VSmu[j])))
             tauList.append(j)
 
         #if tt['tau_vJet'] > 0  and not ord(chr(entry.Tau_idDeepTau2017v2p1VSjet[j])) & tt['tau_vJet'] > 0 :
@@ -215,11 +287,6 @@ def tauDR(entry, j1,j2) :
     if j1 == j2 : return 0. 
     phi1, eta1, phi2, eta2 = entry.Tau_phi[j1], entry.Tau_eta[j1], entry.Tau_phi[j2], entry.Tau_eta[j2]
     return sqrt( (phi2-phi1)**2 + (eta2-eta1)**2 )
-
-def llDR(eta1,phi1,eta2,phi2) :
-    dPhi = min(abs(phi2-phi1),2.*pi-abs(phi2-phi1))
-    return sqrt(dPhi**2 + (eta2-eta1)**2)
-
 
 def lTauDR(eta1,phi1,Lep) :
     phi2, eta2 = Lep.Phi(), Lep.Eta()
@@ -1421,7 +1488,7 @@ def goodElectronDCH(entry, j,cutflow) :
     """ tauFun.goodElectron(): select good electrons 
                                for Z -> ele + ele
     """
-    ee = selections['ee'] # selections for Z->ee
+    ee = selections['et'] # selections for Z->ee
     cutflow.count('cut0')
 
     if entry.Electron_pt[j] < ee['ele_pt']: 
@@ -1437,7 +1504,7 @@ def goodElectronDCH(entry, j,cutflow) :
         cutflow.count('cut4')
         return False
 
-    #if ord(chr(entry.Electron_lostHits[j])) > ee['ele_lostHits']: return False
+    if ord(chr(entry.Electron_lostHits[j])) > ee['ele_lostHits']: return False
     if ee['ele_iso_f'] and entry.Electron_pfRelIso03_all[j] >  ee['ele_iso']:
         cutflow.count('cut5')
         return False
@@ -1464,7 +1531,7 @@ def goodMuonDCH(entry, j ,cutflow):
                            for Z -> mu + mu
     """
     
-    mm = selections['mm'] # selections for Z->mumu
+    mm = selections['mt'] # selections for Z->mumu
     cutflow.count('cut0')
 
     if entry.Muon_pt[j] < mm['mu_pt']:
@@ -2044,7 +2111,7 @@ def findZandL(entry, goodElectronList, goodMuonList, goodTauList, isTightLep=Fal
     extraEleList = getExtraElectronList(entry, goodElectronList, isGood=isTightLep)
     extraMuList = getExtraMuonList(entry, goodTauList, isGood=isTightLep)
     extraTauList = getExtraTauList(entry, goodTauList, isGood=isTightLep)
-    print(extraEleList, extraMuList, extraTauList)
+    #print(extraEleList, extraMuList, extraTauList)
     #find Z pair from goodLists and a fake lepton (no ID)
     bestZpair, Zpair, lep, cat = [], [], -99, ''
     if len(extraEleList)+len(extraMuList)+len(extraTauList) < 1:
@@ -2072,7 +2139,7 @@ def findZandL(entry, goodElectronList, goodMuonList, goodTauList, isTightLep=Fal
             bestDiff = abs(mass-mZ)
             cat = 'tt'
             bestZpair = Zpair
-    print(bestZpair)
+    #print(bestZpair)
     pTcompare = -99
     l = 'G'#just some invalid name to initialize.
     if len(extraEleList) > 0:
@@ -2307,3 +2374,40 @@ def simpleDCHpairing(entry, goodEleList, goodMuList, goodTauList):
             lep3 = goodTauList[0]
             lep4 = goodTauList[1]
     return lep1, lep2, lep3, lep4, cat
+
+def isDuplicate(entry, lep_name1, lep_name2, jl1, jl2, printOn=True):
+    pt, eta, phi ,charge = [-99,-99], [-99,-99], [-99,-99], [-99,-99]
+    lep_name = [lep_name1, lep_name2]
+    lep_idx = [jl1, jl2]
+    for i in range(2):
+        if lep_name[i] == 'e':
+            pt[i] = entry.Electron_pt[lep_idx[i]]
+            eta[i] = entry.Electron_eta[lep_idx[i]]
+            phi[i] = entry.Electron_phi[lep_idx[i]]
+            charge[i] = entry.Electron_charge[lep_idx[i]]
+        elif lep_name[i] == 'm':
+            pt[i] = entry.Muon_pt[lep_idx[i]]
+            eta[i] = entry.Muon_eta[lep_idx[i]]
+            phi[i] = entry.Muon_phi[lep_idx[i]]
+            charge[i] = entry.Muon_charge[lep_idx[i]]
+        elif lep_name[i] == 't':
+            pt[i] = entry.Tau_pt[lep_idx[i]]
+            eta[i] = entry.Tau_eta[lep_idx[i]]
+            phi[i] = entry.Tau_phi[lep_idx[i]]
+            charge[i] = entry.Tau_charge[lep_idx[i]]
+    if charge[0] == charge[1] and DRobj(eta[0], phi[0], eta[1], phi[1]) < 0.3:
+        if printOn: 
+            print(lep_name1, ": ", pt[0], eta[0], phi[0], charge[0])
+            print(lep_name2, ": ", pt[1], eta[1], phi[1], charge[1])
+            print(" ")
+        return True
+    else: return False
+
+def checkDuplicate(entry, cat, lep1, lep2, lep3, lep4, printOn=True):
+    lep = [lep1, lep2, lep3, lep4]
+    print (cat)
+    for i in range(4):
+        for j in range(i+1, len(cat)):
+            if lep[i] >= 0 and lep[j] >= 0 : isDuplicate(entry, cat[i], cat[j], lep[i], lep[j])                
+
+

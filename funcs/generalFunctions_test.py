@@ -40,7 +40,7 @@ def genMatch(entry, jl,lep_type):#matches e/m/t to a gen paricle regardless of p
     idx_match, dR_min, dPt_min = -99,99,99999
     if lep_type == 'e':
         for i in range(entry.nGenPart):
-            if entry.GenPart_status[i] != 1 or entry.GenPart_pdgId[i] == 22: continue#make sure to look at visible gen particle and also not photon
+            if entry.GenPart_status[i] != 1: continue
             dPt = abs(entry.GenPart_pt[i] - entry.Electron_pt[jl])
             dPhi = min(abs(entry.GenPart_phi[i] - entry.Electron_phi[jl]),
                        2.0*pi-abs(entry.GenPart_phi[i] - entry.Electron_phi[jl]))
@@ -322,7 +322,7 @@ def printGenDecayModeBkg(entry,bkg,printOn=False) :#works only for bkg MC
                 if bkg=='TTTo2L' and not (mother > 0 and abs(entry.GenPart_pdgId[mother]) == 24): continue#making sure leptons come from W (top decay)
                 if bkg=='TTW' and not (mother > 0 and abs(entry.GenPart_pdgId[mother]) == 24): continue
                 if bkg=='WZ' and not (mother > 0 and (abs(entry.GenPart_pdgId[mother]) == 24 or abs(entry.GenPart_pdgId[mother]) == 23)): continue#making sure leptons come from W and Z   
-                if bkg=='DY' and not (mother in [0,1] and abs(entry.GenPart_pdgId[mother]) in [23, 1,2,3,4,5,6,21]): continue#making sure leptons come Z or from virutal photons  
+                if bkg=='DY' and mother not in [0,1] and abs(entry.GenPart_pdgId[mother]) not in [22,23] : continue#making sure leptons come Z or from virutal photons  
                 if abs(entry.GenPart_pdgId[j]) == 11 :
                    cat += 'e'
                    if printOn: print(("{0:2d}{1:4d}  {2:6s}{3:6d}".format(j,entry.GenPart_status[j],str(pID),mother)))

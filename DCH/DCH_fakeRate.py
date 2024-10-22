@@ -274,6 +274,8 @@ for count, e in enumerate( inTree) :
             GenCat[gen_cat] += 1
             #print("Gen cat is : ",gen_cat)
             #GF.printMC(e)
+        if "DY" in args.nickName:
+            print(GF.printGenDecayModeBkg(e,'DY'))
     '''
     for cat in cats : 
         cutCounter[cat].count('All')

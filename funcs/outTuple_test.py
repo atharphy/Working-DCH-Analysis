@@ -3545,12 +3545,16 @@ class outTuple() :
                 self.GenPart_statusFlags_2[0]    = entry.GenPart_statusFlags[idx_Lep2_tr]
                 self.GenPart_status_2[0]    = entry.GenPart_status[idx_Lep2_tr]
         '''
-
+        
         if jl3>-1: 
             self.cat[0]  = tauFunDCH.catToNumber3L(cat)
             self.gen_cat[0] = tauFunDCH.catToNumber(gen_cat)
             self.brWeight[0] = br_weight
             Lep3 = TLorentzVector()
+        elif jl3<0:
+            self.cat[0]  = tauFunDCH.catToNumber2L(cat)
+            self.gen_cat[0] = tauFunDCH.catToNumber(gen_cat)
+            self.brWeight[0] = br_weight
         if dch_2 == 'e':
             '''self.pt_3[0] = entry.Electron_pt[jl3]
             self.phi_3[0] = entry.Electron_phi[jl3]
@@ -3655,22 +3659,27 @@ class outTuple() :
 
         self.pt_1[0]   = Lep1.Pt()
         self.pt_2[0]   = Lep2.Pt()
-        self.pt_3[0]   = Lep3.Pt()
         self.phi_2[0]  = Lep2.Phi()
         self.phi_1[0]  = Lep1.Phi()
-        self.phi_3[0]  = Lep3.Phi()
         self.eta_1[0]  = Lep1.Eta()
         self.eta_2[0]  = Lep2.Eta()
-        self.eta_3[0]  = Lep3.Eta()
         self.m_1[0]    = Lep1.M()
         self.m_2[0]    = Lep2.M()
-        self.m_3[0]    = Lep3.M()
+        if jl3 < 0:
+            self.pt_3[0]   = -1
+            self.phi_3[0]  = -9
+            self.eta_3[0]  = -9
+            self.m_3[0]    = -1
+        else:
+            self.pt_3[0]   = Lep3.Pt()
+            self.phi_3[0]  = Lep3.Phi()
+            self.eta_3[0]  = Lep3.Eta()
+            self.m_3[0]    = Lep3.M()
 
         self.pt_4[0]   = -1
         self.phi_4[0]  = -9
         self.eta_4[0]  = -9
         self.m_4[0]    = -1
-
 
         self.mll[0]       = (Lep1 + Lep2).M()
         self.mll2[0]      = -1
@@ -4027,7 +4036,8 @@ class outTuple() :
 
         self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(),  isMC)
         self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(),  isMC)
-        self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
+
+        if jl3 > -1: self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
         #self.IDSF_4[0], self.ISOSF_4[0], self.TrigSF_4[0] = self.getIDISOTrigSF(era, yearin, cat[3], Lep4.Pt(), Lep4.Eta(), Lep4.Phi(),  isMC)
 
         return

@@ -19,9 +19,9 @@ tt:
   tau_vEle: 2
 mt:
   mu_ID: true
-  mu_pt: 20.
+  mu_pt: 30.
   mu_eta: 2.4
-  mu_dxy: 0.045
+  mu_dxy: 0.2
   mu_dz: 0.2
   mu_iso_f: true
   mu_iso: 0.2
@@ -43,9 +43,9 @@ mt:
 
 mmoverlap:
   mu_ID: true
-  mu_pt: 20.
+  mu_pt: 30.
   mu_eta: 2.4
-  mu_dxy: 0.045
+  mu_dxy: 0.2
   mu_dz: 0.2
   mu_iso_f: true
   mu_iso: 0.2
@@ -54,9 +54,9 @@ mmoverlap:
 
 em: 
   mu_ID: true
-  mu_dxy: 0.045
+  mu_dxy: 0.2
   mu_dz: 0.2
-  mu_pt: 20.
+  mu_pt: 30.
   mu_eta: 2.4
   mu_iso_f: true
   mu_iso: 0.2
@@ -64,7 +64,7 @@ em:
   em_DR: 0.3
   lt_DR: 0.5
   ll_DR: 0.3
-  ele_pt: 20
+  ele_pt: 38
   ele_eta: 2.5
   ele_dxy: 0.045
   ele_dz: 0.2
@@ -79,7 +79,7 @@ et:
   ele_ID: true
   ele_lostHits: 1
   ele_convVeto: true
-  ele_pt: 20
+  ele_pt: 38
   ele_eta: 2.5
   lt_DR: 0.5
   ll_DR: 0.3
@@ -103,13 +103,13 @@ eeoverlap:
   ele_ID: true
   ele_lostHits: 2
   ele_convVeto: true
-  ele_pt: 20
+  ele_pt: 38
   ele_eta: 2.5
   ll_DR: 0.3
   ele_iso_f: true
   ele_iso: 0.2
 mm:
-  mu_pt: 20
+  mu_pt: 30
   mu_eta: 2.4
   mu_ID: true
   mu_iso_f: true
@@ -119,18 +119,18 @@ mm:
   mu_type: true
   ll_DR: 0.3
 ee: 
-  ele_pt: 20.
+  ele_pt: 38.
   ele_eta: 2.5
-  ele_dxy: 0.05
+  ele_dxy: 0.045
   ele_dz: 0.1
   ele_lostHits: 0
   ele_convVeto: true
   ele_ID: true
-  ele_iso_f : false
+  ele_iso_f : true
   ele_iso: 0.2
   ll_DR: 0.3
 mextra:
-  mu_pt: 20
+  mu_pt: 30
   mu_eta: 2.4
   mu_ID: true
   mu_iso_f: true
@@ -140,7 +140,7 @@ mextra:
   mu_type: true
   ll_DR: 0.3
 eextra: 
-  ele_pt: 20.
+  ele_pt: 38.
   ele_eta: 2.5
   ele_dxy: 0.05
   ele_dz: 0.1
