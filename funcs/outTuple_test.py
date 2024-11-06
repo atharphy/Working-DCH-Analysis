@@ -2834,7 +2834,6 @@ class outTuple() :
             - if e.g., dch_2 = 'et', the jl3 points to the electron list and jl4 points to the tau list.
             - Lep1 and Lep2 are TLorentz vectors for the members of the dilepton pair
         '''
-        print(systIndex, type(systIndex))
         SystIndex = int(systIndex)
         '''
         self.iso_1[0]   = -99
@@ -3624,6 +3623,7 @@ class outTuple() :
             self.dZ_3[0]   = entry.Electron_dz[jl3]
             #self.Electron_mvaFall17V2noIso_WP90_3[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl3]
             self.EleID_3[0] = entry.Electron_mvaFall17V2noIso[jl3]
+            #print(self.EleID_3[0])
             ''' 
             self.looseId_3[0]   = entry.Electron_looseId[jl3] 
             self.tightId_3[0]      = entry.Electron_tightId[jl3] 
@@ -3652,8 +3652,9 @@ class outTuple() :
             self.dZ_3[0]   = entry.Muon_dz[jl3]
             #self.Electron_mvaFall17V2noIso_WP90_3[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl3]
             if entry.Muon_looseId[jl3]: self.MuID_3[0] = 1
-            elif entry.Muon_mediumId[jl3]: self.MuID_3[0] = 2
-            elif entry.Muon_tightId[jl3]: self.MuID_3[0] = 3
+            if entry.Muon_mediumId[jl3]: self.MuID_3[0] = 2
+            if entry.Muon_tightId[jl3]: self.MuID_3[0] = 3
+            
             ''' 
             self.looseId_3[0]   = entry.Muon_looseId[jl3] 
             self.tightId_3[0]      = entry.Muon_tightId[jl3] 

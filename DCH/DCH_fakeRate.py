@@ -454,7 +454,7 @@ for count, e in enumerate( inTree) :
         #print(len(goodElectronList),len(goodMuonList),len(goodTauList))
         if len(goodElectronList) < 2 and len(goodMuonList) < 2 and len(goodTauList) < 2: continue
         bestZpair, lep_3, cat3L = TF.findZandL(e, goodElectronList, goodMuonList, goodTauList, isTightLep=False)
-        print (bestZpair, lep_3, cat3L)
+        #print (bestZpair, lep_3, cat3L)
         if len(bestZpair) == 0 or lep_3 < 0 or cat3L == '': continue
         SVFit = False
         if not MC : isMC = False

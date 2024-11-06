@@ -2115,10 +2115,10 @@ def findZandL(entry, goodElectronList, goodMuonList, goodTauList, isTightLep=Fal
     #find Z pair from goodLists and a fake lepton (no ID)
     bestZpair, Zpair, lep, cat = [], [], -99, ''
     if len(extraEleList)+len(extraMuList)+len(extraTauList) < 1:
-        print("no extra lepton found!")
+        #print("no extra lepton found!")
         return bestZpair, lep, cat
     if len(goodElectronList) < 2 and len(goodMuonList) < 2 and len(goodTauList) < 2:
-        print("Not enough good leptons to make Z!")
+        #print("Not enough good leptons to make Z!")
         return bestZpair, lep, cat
 
     if len(goodElectronList) > 1:
