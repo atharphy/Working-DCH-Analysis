@@ -1499,26 +1499,26 @@ class outTuple() :
             self.gen_match_4[0] = -1
             #self.gen_match_5[0] = -1
             
-            self.IDSF_1   = 1
-            self.ISOSF_1   = 1
-            self.TrigSF_1   = 1
-            self.IDSF_2   = 1
-            self.ISOSF_2   = 1
-            self.TrigSF_2   = 1
-            self.IDSF_3   = 1
-            self.ISOSF_3   = 1
-            self.TrigSF_3   = 1
-            self.IDSF_4   = 1
-            self.ISOSF_4   = 1
-            self.TrigSF_4   = 1
-            self.EleID_1 = -99
-            self.EleID_2 = -99
-            self.EleID_3 = -99
-            self.EleID_4 = -99
-            self.MuID_1 = -99
-            self.MuID_2 = -99
-            self.MuID_3 = -99
-            self.MuID_4 = -99
+            self.IDSF_1[0]   = 1
+            self.ISOSF_1[0]   = 1
+            self.TrigSF_1[0]   = 1
+            self.IDSF_2[0]   = 1
+            self.ISOSF_2[0]   = 1
+            self.TrigSF_2[0]   = 1
+            self.IDSF_3[0]   = 1
+            self.ISOSF_3[0]   = 1
+            self.TrigSF_3[0]   = 1
+            self.IDSF_4[0]   = 1
+            self.ISOSF_4[0]   = 1
+            self.TrigSF_4[0]   = 1
+            self.EleID_1[0] = -99
+            self.EleID_2[0] = -99
+            self.EleID_3[0] = -99
+            self.EleID_4[0] = -99
+            self.MuID_1[0] = -99
+            self.MuID_2[0] = -99
+            self.MuID_3[0] = -99
+            self.MuID_4[0] = -99
 
             try :
                 self.weight[0]           = entry.genWeight
@@ -3045,27 +3045,27 @@ class outTuple() :
             self.gen_match_3[0] = -1
             self.gen_match_4[0] = -1
             #self.gen_match_5[0] = -1
-
-            self.IDSF_1   = 1
-            self.ISOSF_1   = 1
-            self.TrigSF_1   = 1
-            self.IDSF_2   = 1
-            self.ISOSF_2   = 1
-            self.TrigSF_2   = 1
-            self.IDSF_3   = 1
-            self.ISOSF_3   = 1
-            self.TrigSF_3   = 1
-            self.IDSF_4   = 1
-            self.ISOSF_4   = 1
-            self.TrigSF_4   = 1
-            self.EleID_1 = -99
-            self.EleID_2 = -99
-            self.EleID_3 = -99
-            self.EleID_4 = -99
-            self.MuID_1 = -99
-            self.MuID_2 = -99
-            self.MuID_3 = -99
-            self.MuID_4 = -99
+            
+            self.IDSF_1[0]   = 1
+            self.ISOSF_1[0]   = 1
+            self.TrigSF_1[0]   = 1
+            self.IDSF_2[0]   = 1
+            self.ISOSF_2[0]   = 1
+            self.TrigSF_2[0]   = 1
+            self.IDSF_3[0]   = 1
+            self.ISOSF_3[0]   = 1
+            self.TrigSF_3[0]   = 1
+            self.IDSF_4[0]   = 1
+            self.ISOSF_4[0]   = 1
+            self.TrigSF_4[0]   = 1
+            self.EleID_1[0] = -99
+            self.EleID_2[0] = -99
+            self.EleID_3[0] = -99
+            self.EleID_4[0] = -99
+            self.MuID_1[0] = -99
+            self.MuID_2[0] = -99
+            self.MuID_3[0] = -99
+            self.MuID_4[0] = -99
 
             try :
                 self.weight[0]           = entry.genWeight

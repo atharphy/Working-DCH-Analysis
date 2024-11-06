@@ -10,10 +10,10 @@ from math import sqrt, pi
 
 # import from ZH_Run2/funcs/
 sys.path.insert(1,'../funcs/')
-import tauFunDCH_test as TF
-import generalFunctions_test as GF 
+import tauFunDCH as TF
+import generalFunctions as GF 
 #import Weights 
-import outTuple_test as outTuple
+import outTuple as outTuple
 import time
 
 def getArgs() :
