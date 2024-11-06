@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# doesn't do pairing. only goes over good leptons
+
 
 # import external modules 
 import sys
@@ -10,10 +10,10 @@ from math import sqrt, pi
 
 # import from ZH_Run2/funcs/
 sys.path.insert(1,'../funcs/')
-import tauFunDCH as TF
-import generalFunctions as GF 
+import tauFunDCH_test as TF
+import generalFunctions_test as GF 
 #import Weights 
-import outTuple as outTuple
+import outTuple_test as outTuple
 import time
 
 def getArgs() :
@@ -237,7 +237,9 @@ allMET=[]
 for i,j in enumerate(outTuple.allsystMET):
     if 'MET' in j and 'T1_' in j and 'phi' not in j : allMET.append(j)
 
-
+ele_cutflow = TH1D('ele_cutflow','Cutflow for ele',8,0,8)
+mu_cutflow = TH1D('mu_cutflow','Cutflow for mu',8,0,8)
+tau_cutflow = TH1D('tau_cutflow','Cutflow for tau',8,0,8)
 
 #Weights=Weights.Weights(args.year)
 
@@ -251,31 +253,51 @@ for cat in cats:
 
 for count, e in enumerate( inTree) :
     #if count != 738: continue #to run only over a single event
+    #if count <=710000: continue
     if count % countMod == 0 :
         print(("Count={0:d}".format(count)))
         if count >= 10000 : countMod = 10000
     if count == nMax : break    
     printOn=False
-
+    '''
+    TF.run_n_minus_1_cutflow(e, 'e', ele_cutflow)
+    TF.run_n_minus_1_cutflow(e, 'm', mu_cutflow)
+    TF.run_n_minus_1_cutflow(e, 't', tau_cutflow)
+    continue
+    '''
     gen_cat = ''
+    br_weight = 1
     if MC:
         '''if 'Hpp' in  args.nickName :
-           if 't' not in GF.printGenDecayMode(e): continue
-           #if not GF.printGenDecayMode(e)=='eeee': continue
-           GF.printMC(e)
-           print ('Gen channel is', GF.printGenDecayMode(e))
+           #if 't' not in GF.printGenDecayMode(e, isPrompt=True): continue
+           if not GF.printGenDecayMode(e, isPrompt=True)=='etet': continue
+           #GF.printMC(e)
+           #print ('Gen channel is', GF.printGenDecayMode(e,isPrompt=True))
         else:
            if not GF.printGenDecayModeBkg(e,bkg=args.nickName) == args.category : continue
            #GF.printMC(e)
            #print ('Gen channel is', GF.printGenDecayMode(e))
         '''
+        #br_weight = 1
         if "Hpp" in args.nickName:
-            gen_cat = GF.printGenDecayMode(e,isPrompt=True)
-            GenCat[gen_cat] += 1
-            #print("Gen cat is : ",gen_cat)
+            gen_cat = GF.printGenDecayMode(e,printOn=False,isPrompt=True)
+            #GenCat[gen_cat] += 1
             #GF.printMC(e)
-        if "DY" in args.nickName:
-            print(GF.printGenDecayModeBkg(e,'DY'))
+            #print("Gen cat is : ",gen_cat)
+            #----for testing-----
+            if gen_cat[:2] == 'ee' or gen_cat[:2] == 'mm' or gen_cat[:2] == 'tt':
+                br_weight = br_weight*3/2
+            elif gen_cat[:2] == 'em' or gen_cat[:2] == 'et' or gen_cat[:2] == 'mt':
+                br_weight = br_weight*3/4
+            if gen_cat[2:] == 'ee' or gen_cat[2:] == 'mm' or gen_cat[2:] == 'tt':
+                br_weight = br_weight*3/2
+            elif gen_cat[2:] == 'em' or gen_cat[2:] == 'et' or gen_cat[2:] == 'mt':
+                br_weight = br_weight*3/4
+            #if gen_cat[:2] == gen_cat[2:]:
+            #    br_weight = br_weight*2
+            gen_cat = GF.printGenDecayMode(e,printOn=False,isPrompt=False)#this one redirects gen_cat to non-prompt gen ch.
+            GenCat[gen_cat] += br_weight
+            #--------------------
     '''
     for cat in cats : 
         cutCounter[cat].count('All')
@@ -416,11 +438,18 @@ for count, e in enumerate( inTree) :
             for i, j in enumerate (philist): 
                 outTuple.list_of_arrays[i+len(metlist)][0] = philist[i]
             ''' 
+
         goodElectronList = TF.makeGoodElectronListDCH(e,cutflow['ele'])
         goodMuonList = TF.makeGoodMuonListDCH(e,cutflow['muon'])
         goodTauList = TF.makeGoodTauList(e,cutflow['tau'])
         dupl = 0 #to count duplicate channels
         selected_evts += 1
+
+        '''if len(goodMuonList)+len(goodTauList) == 0: TF.run_n_minus_1_cutflow(e, 'e', ele_cutflow)
+        elif len(goodElectronList)+len(goodTauList) == 0: TF.run_n_minus_1_cutflow(e, 'm', mu_cutflow)
+        elif len(goodElectronList)+len(goodMuonList) == 0: TF.run_n_minus_1_cutflow(e, 't', tau_cutflow)
+        continue
+        '''
         #=========3-lep Z(ll) + extra lepton =====================================
         #print(len(goodElectronList),len(goodMuonList),len(goodTauList))
         if len(goodElectronList) < 2 and len(goodMuonList) < 2 and len(goodTauList) < 2: continue
@@ -429,10 +458,56 @@ for count, e in enumerate( inTree) :
         if len(bestZpair) == 0 or lep_3 < 0 or cat3L == '': continue
         SVFit = False
         if not MC : isMC = False
-        outTuple.Fill3L(e,SVFit,cat3L,gen_cat, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
-
+        outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+        continue
         ######## BELOW IS FOR DCH ANALYSIS, NOT NEEDED FOR FAKE RATE#####################
-        continue 
+        
+        #===================no pairing==============
+        if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 2:
+            bestDCH1 = [] #these are just containers for keeping the code simple, no pairing is done!
+            lep1, lep2, lep3, lep4, cat2L = TF.simpleDCHpairing(e, goodElectronList, goodMuonList, goodTauList)
+            bestDCH1 = [lep1, lep2]
+            if lep1 + lep2 < 0 or cat2L == '': continue
+            SVFit = False
+            if not MC : isMC = False
+            outTuple.Fill3L(e,SVFit,cat2L,gen_cat,br_weight, bestDCH1,lep3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+        #continue
+        elif len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 3:
+            evts_3lep += 1
+            bestDCH1 = [] #these are just containers for keeping the code simple, no pairing is done!
+            lep1, lep2, lep3, lep4, cat3L = TF.simpleDCHpairing(e, goodElectronList, goodMuonList, goodTauList)
+            bestDCH1 = [lep1, lep2]
+            if lep1 + lep2 + lep3 < 0 or cat3L == '': continue
+            #TF.checkDuplicate(e, cat3L, lep1, lep2, lep3, lep4)
+            SVFit = False
+            if not MC : isMC = False
+            outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestDCH1,lep3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+            '''if 1:# GF.printGenDecayModeBkg(e,bkg=args.nickName) == args.category :
+                    #if len(goodTauList) >0: continue
+                    print (count, cat, 'e:', len(goodElectronList), 'm:',len(goodMuonList), 't:',len(goodTauList))
+                    GF.printMC(e)
+                    for i in goodElectronList:
+                        print ('Ele ',e.Electron_charge[i], i, GF.genMatch(e,i,'e'),e.Electron_pt[i],e.Electron_eta[i],e.Electron_phi[i])
+                    for i in goodMuonList:
+                        print ('Mu ',e.Muon_charge[i], i, GF.genMatch(e,i,'m'),e.Muon_pt[i],e.Muon_eta[i],e.Muon_phi[i])
+                    for i in goodTauList:
+                        print ('Tau ',e.Tau_charge[i], i, GF.genMatch(e,i,'t'),e.Tau_pt[i],e.Tau_eta[i],e.Tau_phi[i])
+            for j in range(e.nElectron):
+                print ("electron:",j,GF.genMatch(e,j,'e'),e.Electron_pt[j],e.Electron_eta[j],e.Electron_phi[j])
+                print("")
+            '''
+        
+        elif len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 4:
+            bestDCH1, bestDCH2 = [], [] #these are just containers for keeping the code simple, no pairing is done!
+            lep1, lep2, lep3, lep4, cat = TF.simpleDCHpairing(e, goodElectronList, goodMuonList, goodTauList)
+            bestDCH1 = [lep1, lep2]
+            bestDCH2 = [lep3, lep4]
+            if lep1 + lep2 + lep3 + lep4 < 0 or cat == '': continue
+            SVFit = False
+            if not MC : isMC = False
+            outTuple.Fill(e,SVFit,cat,gen_cat, br_weight, bestDCH1,bestDCH2,isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+        continue
+         
         #=============3-lep=====================================
         if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 3:
             evts_3lep += 1
@@ -507,7 +582,7 @@ for count, e in enumerate( inTree) :
 
                 SVFit = False
                 if not MC : isMC = False 
-                outTuple.Fill3L(e,SVFit,cat3L,gen_cat, bestDCH1,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+                outTuple.Fill3L(e,SVFit,cat3L,gen_cat, br_weight, bestDCH1,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
                 #=========================================================    
 
         if len(goodElectronList)+len(goodMuonList)+len(goodTauList) > 4:
@@ -523,7 +598,7 @@ for count, e in enumerate( inTree) :
         for i in goodTauList:
             evt_charge += e.Tau_charge[i]
         #if evt_charge !=0: 
-       #    continue
+      #    continue
         #print 'Event: ', count, ' #e: ',len(goodElectronList), ' #mu: ',len(goodMuonList), ' #t: ', len(goodTauList), '--> Good candidates'
         #print 'Event: ', count, ' #e: ',e.nElectron, ' #mu: ',e.nMuon, ' #t: ', e.nTau, '--> All reco'
         #its faster to modify the pair functions to use these good lists rather than passing all the candidates through the cuts. 
@@ -705,8 +780,8 @@ for count, e in enumerate( inTree) :
                 SVFit = False
                 #continue        
                 if not MC : isMC = False
-                TruCat[gen_cat] += 1
-                outTuple.Fill(e,SVFit,cat,gen_cat, bestDCH1,bestDCH2,isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+                if "Hpp" in args.nickName: TruCat[gen_cat] += 1
+                outTuple.Fill(e,SVFit,cat,gen_cat, br_weight, bestDCH1,bestDCH2,isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
                 '''
                 if maxPrint > 0 :
                 maxPrint -= 1
@@ -717,9 +792,12 @@ for count, e in enumerate( inTree) :
                 GF.printEvent(e)
                 print("Event ID={0:s} cat={1:s}".format(GF.eventID(e),cat))
                 '''
+ele_cutflow.Write()
+mu_cutflow.Write()
+tau_cutflow.Write()
+
 dT = time.time() - tStart
 print(("Run time={0:.2f} s  time/event={1:.1f} us".format(dT,1000000.*dT/count)))
-
 hLabels=[]
 hLabels.append('All')
 hLabels.append('inJSON')
@@ -768,7 +846,6 @@ if MC and "Hpp" in args.nickName:
     hGenCat.Write()
     hTruCat.Sumw2()
     hTruCat.Write()
-
 #print '------------------------->',fW, outFileName
 for icat,cat in enumerate(cats) :
     print(('\nSummary for {0:s}'.format(cat)))

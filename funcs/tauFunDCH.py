@@ -2109,7 +2109,7 @@ def findZtt(goodTauList, entry) :
 def findZandL(entry, goodElectronList, goodMuonList, goodTauList, isTightLep=False):
     mZ, bestDiff = 91.19, 99999.
     extraEleList = getExtraElectronList(entry, goodElectronList, isGood=isTightLep)
-    extraMuList = getExtraMuonList(entry, goodTauList, isGood=isTightLep)
+    extraMuList = getExtraMuonList(entry, goodMuonList, isGood=isTightLep)
     extraTauList = getExtraTauList(entry, goodTauList, isGood=isTightLep)
     #print(extraEleList, extraMuList, extraTauList)
     #find Z pair from goodLists and a fake lepton (no ID)
@@ -2217,21 +2217,47 @@ def numberToCat3L(number) :
 
 
 
-def catToNumber2Lep(cat) :
-    number = { 'ee':1, 'mm':2}
+def catToNumber2L(cat) :
+    number = { 'ee':40, 'em':41, 'et':42, 'mm':43, 'mt':44, 'tt':45}
     return number[cat]
 
-def numberToCat2Lep(number) :
-    cat = { 1:'ee', 2:'mm'}
+def numberToCat2L(number) :
+    cat = { 40:'ee', 41:'em', 42:'et', 43:'mm', 44:'mt', 45:'tt'}
     return cat[number]
 
-def simpleDCHpairing(entry, goodEleList, goodMuList, goodTauList):
+def simpleDCHpairing(entry, goodEleList, goodMuList, goodTauList):#actually it doesn't do any pairing. Just puts out all the lepton indices used to form outuple.
     cat = ''
     lep1, lep2, lep3, lep4 = -99, -99, -99, -99
     nEle, nMu, nTau = len(goodEleList), len(goodMuList), len(goodTauList)
-    if (nEle + nMu + nTau) < 3 or (nEle + nMu + nTau) > 4:
-        return lep1, lep2, lep3, lep4, cat 
-    if nEle + nMu + nTau == 3:
+    if (nEle + nMu + nTau) < 2 or (nEle + nMu + nTau) > 4:
+        return lep1, lep2, lep3, lep4, cat
+    if (nEle + nMu + nTau) == 2:
+        if nEle == 2:
+            lep1 = goodEleList[0]
+            lep2 = goodEleList[1]
+            cat = 'ee'
+        elif nMu == 2:
+            lep1 = goodMuList[0]
+            lep2 = goodMuList[1]
+            cat = 'mm'
+        elif nTau == 2:
+            lep1 = goodTauList[0]
+            lep2 = goodTauList[1]
+            cat = 'tt'
+        elif nEle == 1 and nMu == 1:
+            lep1 = goodEleList[0]
+            lep2 = goodMuList[0]
+            cat = 'em'
+        elif nMu == 1 and nTau == 1:
+            lep1 = goodMuList[0]
+            lep2 = goodTauList[0]
+            cat = 'mt'
+        elif nTau ==1 and nEle == 1:
+            lep1 = goodEleList[0]
+            lep2 = goodTauList[0]
+            cat = 'et'
+
+    elif nEle + nMu + nTau == 3:
         if nEle == 3:
             cat = 'eee'
             lep1 = goodEleList[0]
@@ -2252,31 +2278,31 @@ def simpleDCHpairing(entry, goodEleList, goodMuList, goodTauList):
             lep1 = goodMuList[0]
             lep2 = goodMuList[1]
             lep3 = goodMuList[2]
-        elif nMu == 2:
-            cat = 'mm'
+        elif nMu == 2 and nEle == 1:
+            cat = 'emm'
+            lep1 = goodEleList[0]
+            lep2 = goodMuList[0]
+            lep3 = goodMuList[1]
+        
+        elif nMu ==2 and nTau == 1:
             lep1 = goodMuList[0]
-            lep2 = goodMuList[1]
-            if nEle == 1:
-                lep3 = goodEleList[0]
-                cat += 'e'
-            elif nTau == 1:
-                lep3 = goodTauList[0]
-                cat += 't'
+            lep2 = goodMuList[1]    
+            lep3 = goodTauList[0]
         elif nTau == 3:
             cat = 'ttt'
             lep1 = goodTauList[0]
             lep2 = goodTauList[1]
             lep3 = goodTauList[2]
         elif nTau == 2:
-            cat = 'tt'
-            lep1 = goodTauList[0]
-            lep2 = goodTauList[1]
             if nMu == 1:
-                lep3 = goodMuList[0]
-                cat += 'm'
+                lep1 = goodMuList[0]
+                cat = 'm'
             elif nEle == 1:
-                lep3 = goodEleList[0]
-                cat += 'e'
+                lep1 = goodEleList[0]
+                cat = 'e'
+            cat += 'tt'
+            lep2 = goodTauList[0]
+            lep3 = goodTauList[1]
         elif nEle ==1 and nMu==1 and nTau==1:
             cat = 'emt'
             lep1 = goodEleList[0]

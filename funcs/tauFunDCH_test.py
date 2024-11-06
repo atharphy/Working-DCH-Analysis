@@ -2109,7 +2109,7 @@ def findZtt(goodTauList, entry) :
 def findZandL(entry, goodElectronList, goodMuonList, goodTauList, isTightLep=False):
     mZ, bestDiff = 91.19, 99999.
     extraEleList = getExtraElectronList(entry, goodElectronList, isGood=isTightLep)
-    extraMuList = getExtraMuonList(entry, goodTauList, isGood=isTightLep)
+    extraMuList = getExtraMuonList(entry, goodMuonList, isGood=isTightLep)
     extraTauList = getExtraTauList(entry, goodTauList, isGood=isTightLep)
     #print(extraEleList, extraMuList, extraTauList)
     #find Z pair from goodLists and a fake lepton (no ID)

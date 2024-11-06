@@ -459,7 +459,7 @@ for count, e in enumerate( inTree) :
             SVFit = False
             if not MC : isMC = False
             outTuple.Fill3L(e,SVFit,cat2L,gen_cat,br_weight, bestDCH1,lep3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
-        continue
+        #continue
         elif len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 3:
             evts_3lep += 1
             bestDCH1 = [] #these are just containers for keeping the code simple, no pairing is done!

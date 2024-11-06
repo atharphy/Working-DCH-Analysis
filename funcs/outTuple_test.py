@@ -231,7 +231,15 @@ class outTuple() :
         self.IDSF_4   = array('f',[0])
         self.ISOSF_4   = array('f',[0])
         self.TrigSF_4   = array('f',[0])
-
+        self.EleID_1 = array('f',[0])
+        self.EleID_2 = array('f',[0])
+        self.EleID_3 = array('f',[0])
+        self.EleID_4 = array('f',[0])
+        self.MuID_1 = array('l',[0])
+        self.MuID_2 = array('l',[0])
+        self.MuID_3 = array('l',[0])
+        self.MuID_4 = array('l',[0])
+        
         self.nGoodElectron    = array('l',[0])
         self.nGoodMuon        = array('l',[0])
         self.nGoodTau         = array('l',[0])
@@ -555,6 +563,14 @@ class outTuple() :
         self.t.Branch('IDSF_4',           self.IDSF_4,            'IDSF_4/F' )
         self.t.Branch('ISOSF_4',           self.ISOSF_4,            'ISOSF_4/F' )
         self.t.Branch('TrigSF_4',           self.TrigSF_4,            'TrigSF_4/F' )
+        self.t.Branch('EleID_1',           self.EleID_1,            'EleID_1/F' )
+        self.t.Branch('EleID_2',           self.EleID_2,            'EleID_2/F' )
+        self.t.Branch('EleID_3',           self.EleID_3,            'EleID_3/F' )
+        self.t.Branch('EleID_4',           self.EleID_4,            'EleID_4/F' )
+        self.t.Branch('MuID_1',           self.MuID_1,            'MuID_1/I' )
+        self.t.Branch('MuID_2',           self.MuID_2,            'MuID_2/I' )
+        self.t.Branch('MuID_3',           self.MuID_3,            'MuID_3/I' )
+        self.t.Branch('MuID_4',           self.MuID_4,            'MuID_4/I' )
 
         self.t.Branch('nGoodElectron',    self.nGoodElectron,     'nGoodElectron/I' )
         self.t.Branch('nGoodMuon',        self.nGoodMuon,         'nGoodMuon/I' )
@@ -1482,7 +1498,27 @@ class outTuple() :
             self.gen_match_3[0] = -1
             self.gen_match_4[0] = -1
             #self.gen_match_5[0] = -1
-
+            
+            self.IDSF_1[0]   = 1
+            self.ISOSF_1[0]   = 1
+            self.TrigSF_1[0]   = 1
+            self.IDSF_2[0]   = 1
+            self.ISOSF_2[0]   = 1
+            self.TrigSF_2[0]   = 1
+            self.IDSF_3[0]   = 1
+            self.ISOSF_3[0]   = 1
+            self.TrigSF_3[0]   = 1
+            self.IDSF_4[0]   = 1
+            self.ISOSF_4[0]   = 1
+            self.TrigSF_4[0]   = 1
+            self.EleID_1[0] = -99
+            self.EleID_2[0] = -99
+            self.EleID_3[0] = -99
+            self.EleID_4[0] = -99
+            self.MuID_1[0] = -99
+            self.MuID_2[0] = -99
+            self.MuID_3[0] = -99
+            self.MuID_4[0] = -99
 
             try :
                 self.weight[0]           = entry.genWeight
@@ -2798,6 +2834,7 @@ class outTuple() :
             - if e.g., dch_2 = 'et', the jl3 points to the electron list and jl4 points to the tau list.
             - Lep1 and Lep2 are TLorentz vectors for the members of the dilepton pair
         '''
+        print(systIndex, type(systIndex))
         SystIndex = int(systIndex)
         '''
         self.iso_1[0]   = -99
@@ -3008,7 +3045,27 @@ class outTuple() :
             self.gen_match_3[0] = -1
             self.gen_match_4[0] = -1
             #self.gen_match_5[0] = -1
-
+            
+            self.IDSF_1[0]   = 1
+            self.ISOSF_1[0]   = 1
+            self.TrigSF_1[0]   = 1
+            self.IDSF_2[0]   = 1
+            self.ISOSF_2[0]   = 1
+            self.TrigSF_2[0]   = 1
+            self.IDSF_3[0]   = 1
+            self.ISOSF_3[0]   = 1
+            self.TrigSF_3[0]   = 1
+            self.IDSF_4[0]   = 1
+            self.ISOSF_4[0]   = 1
+            self.TrigSF_4[0]   = 1
+            self.EleID_1[0] = -99
+            self.EleID_2[0] = -99
+            self.EleID_3[0] = -99
+            self.EleID_4[0] = -99
+            self.MuID_1[0] = -99
+            self.MuID_2[0] = -99
+            self.MuID_3[0] = -99
+            self.MuID_4[0] = -99
 
             try :
                 self.weight[0]           = entry.genWeight
@@ -3560,13 +3617,13 @@ class outTuple() :
             self.phi_3[0] = entry.Electron_phi[jl3]
             self.eta_3[0] = entry.Electron_eta[jl3]
             self.m_3[0] = entry.Electron_mass[jl3]
-            '''
-            
+            '''            
             self.iso_3[0]  = entry.Electron_pfRelIso03_all[jl3]
             self.q_3[0]  = entry.Electron_charge[jl3]
             self.d0_3[0]   = entry.Electron_dxy[jl3]
             self.dZ_3[0]   = entry.Electron_dz[jl3]
             #self.Electron_mvaFall17V2noIso_WP90_3[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl3]
+            self.EleID_3[0] = entry.Electron_mvaFall17V2noIso[jl3]
             ''' 
             self.looseId_3[0]   = entry.Electron_looseId[jl3] 
             self.tightId_3[0]      = entry.Electron_tightId[jl3] 
@@ -3594,6 +3651,9 @@ class outTuple() :
             self.d0_3[0]   = entry.Muon_dxy[jl3]
             self.dZ_3[0]   = entry.Muon_dz[jl3]
             #self.Electron_mvaFall17V2noIso_WP90_3[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl3]
+            if entry.Muon_looseId[jl3]: self.MuID_3[0] = 1
+            elif entry.Muon_mediumId[jl3]: self.MuID_3[0] = 2
+            elif entry.Muon_tightId[jl3]: self.MuID_3[0] = 3
             ''' 
             self.looseId_3[0]   = entry.Muon_looseId[jl3] 
             self.tightId_3[0]      = entry.Muon_tightId[jl3] 
