@@ -11,7 +11,7 @@ from math import sqrt, pi
 # import from ZH_Run2/funcs/
 sys.path.insert(1,'../funcs/')
 import tauFunDCH_test as TF
-import generalFunctions_test as GF 
+import generalFunctions as GF 
 #import Weights 
 import outTuple_test as outTuple
 import time
@@ -119,9 +119,9 @@ if MC :
     PU.calculateWeights(args.nickName,args.year)
 else :
     CJ = ''
-    if args.year == 2016 : CJ = GF.checkJSON(filein='Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt')
-    if args.year == 2017 : CJ = GF.checkJSON(filein='Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt')
-    if args.year == 2018 : CJ = GF.checkJSON(filein='Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt')
+    if args.year == 2016 : CJ = GF.checkJSON(filein='Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt')
+    if args.year == 2017 : CJ = GF.checkJSON(filein='Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt')
+    if args.year == 2018 : CJ = GF.checkJSON(filein='Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt')
 
 
 #print 'systematics', doJME
@@ -339,9 +339,16 @@ for count, e in enumerate( inTree) :
 
     elif not MC and args.year == 2018:
         #TrigCount.count('notrig')
+        '''
+        if 'SingleMuon' in args.nickName and not (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
+        elif 'EGamma' in args.nickName:
+            if (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
+            if not (e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
+        '''
         if 'EGamma' in args.nickName and not (e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
-        elif 'SingleMuon' in args.nickName and (e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf) and not (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
-        
+        elif 'SingleMuon' in args.nickName:
+            if (e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
+            if not (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
 
     '''for cat in cats: 
         isTrig=False
@@ -470,7 +477,8 @@ for count, e in enumerate( inTree) :
             SVFit = False
             if not MC : isMC = False
             outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestDCH1,lep3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
-            '''if 1:# GF.printGenDecayModeBkg(e,bkg=args.nickName) == args.category :
+            doGenMatch = False
+            if doGenMatch:# GF.printGenDecayModeBkg(e,bkg=args.nickName) == args.category :
                     #if len(goodTauList) >0: continue
                     print (count, cat, 'e:', len(goodElectronList), 'm:',len(goodMuonList), 't:',len(goodTauList))
                     GF.printMC(e)
@@ -480,10 +488,6 @@ for count, e in enumerate( inTree) :
                         print ('Mu ',e.Muon_charge[i], i, GF.genMatch(e,i,'m'),e.Muon_pt[i],e.Muon_eta[i],e.Muon_phi[i])
                     for i in goodTauList:
                         print ('Tau ',e.Tau_charge[i], i, GF.genMatch(e,i,'t'),e.Tau_pt[i],e.Tau_eta[i],e.Tau_phi[i])
-            for j in range(e.nElectron):
-                print ("electron:",j,GF.genMatch(e,j,'e'),e.Electron_pt[j],e.Electron_eta[j],e.Electron_phi[j])
-                print("")
-            '''
         
         elif len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 4:
             bestDCH1, bestDCH2 = [], [] #these are just containers for keeping the code simple, no pairing is done!
@@ -495,7 +499,7 @@ for count, e in enumerate( inTree) :
             if not MC : isMC = False
             outTuple.Fill(e,SVFit,cat,gen_cat, br_weight, bestDCH1,bestDCH2,isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
         continue
-         
+        
         #=============3-lep=====================================
         if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 3:
             evts_3lep += 1
@@ -586,7 +590,7 @@ for count, e in enumerate( inTree) :
         for i in goodTauList:
             evt_charge += e.Tau_charge[i]
         #if evt_charge !=0: 
-      #    continue
+        #    continue
         #print 'Event: ', count, ' #e: ',len(goodElectronList), ' #mu: ',len(goodMuonList), ' #t: ', len(goodTauList), '--> Good candidates'
         #print 'Event: ', count, ' #e: ',e.nElectron, ' #mu: ',e.nMuon, ' #t: ', e.nTau, '--> All reco'
         #its faster to modify the pair functions to use these good lists rather than passing all the candidates through the cuts. 
@@ -806,6 +810,12 @@ fW.cd()
 hNEvts = TH1D("hNEvts", "nEntries", 1, 0,1)
 hNEvts.Fill(0,nentries) 
 hNEvts.Write()
+runsTree = inFile.Get("Runs")
+hNWEvts = TH1D("hNWEvts", "nWeightedEntries", 1, 0,1)
+for entry in runsTree:
+    value = getattr(entry,"genEventSumw")
+    hNWEvts.SetBinContent(1,value)
+hNWEvts.Write()
 '''hTrigCount = TH1D("hTrigCount", "Trigger count", 10, 0,10)
 hTrigCount.GetXaxis().SetBinLabel(1, "notrig")
 hTrigCount.GetXaxis().SetBinLabel(2, "sin_lep")

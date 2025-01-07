@@ -1575,7 +1575,10 @@ def ExtraMuon(entry, j, isGoodMu=False):
     """ tauFun.goodMuon(): select good muons
                            for Z -> mu + mu
     """
-    mm = selections['mextra'] # selections for Z->mumu
+    if isGoodMu:
+        mm = selections['tight_mextra']
+    else:
+        mm = selections['loose_mextra']
     if entry.Muon_pt[j] < mm['mu_pt']: return False
     if abs(entry.Muon_eta[j]) > mm['mu_eta']: return False
     if mm['mu_iso_f'] and entry.Muon_pfRelIso04_all[j] >  mm['mu_iso']:return False
@@ -1587,14 +1590,14 @@ def ExtraMuon(entry, j, isGoodMu=False):
     if isGoodMu:
         if mm['mu_ID'] and not entry.Muon_tightId[j]: return False
     else:
-        if mm['mu_ID'] and entry.Muon_tightId[j]: return False
+        if mm['mu_ID'] and entry.Muon_looseId[j]: return False
     return True 
 
 def getExtraMuonList(entry, listMu, isGood=False):
     extraMuonList = []
     for i in range(entry.nMuon) :
         if i not in listMu: 
-            if isGood and ExtraMuon(entry, i, isGoodMu=True) : goodExtraMuonList.append(i)
+            if isGood and ExtraMuon(entry, i, isGoodMu=True) : extraMuonList.append(i)
             if not isGood and ExtraMuon(entry, i, isGoodMu=False) : extraMuonList.append(i)
     return extraMuonList
 
@@ -1603,7 +1606,10 @@ def ExtraElectron(entry, j, isGoodElectron=False) :
     """ tauFun.goodElectron(): select good electrons 
                                for Z -> ele + ele
     """
-    ee = selections['eextra'] # selections for Z->ee
+    if isGoodElectron:
+        ee = selections['tight_eextra']
+    else:
+        ee = selections['loose_eextra']
     if entry.Electron_pt[j] < ee['ele_pt']: return False
     if abs(entry.Electron_eta[j]) > ee['ele_eta']: return False
     if abs(entry.Electron_dxy[j]) > ee['ele_dxy']: return False
@@ -1616,7 +1622,7 @@ def ExtraElectron(entry, j, isGoodElectron=False) :
     if isGoodElectron:
         if ee['ele_ID'] and not entry.Electron_mvaFall17V2noIso_WP90[j] : return False
     else:
-        if ee['ele_ID'] and entry.Electron_mvaFall17V2noIso_WP90[j]: return False
+        if ee['ele_ID'] and entry.Electron_mvaFall17V2noIso_WPL[j]: return False
     return True 
 
 def getExtraElectronList(entry, listEl, isGood=False):
@@ -1632,7 +1638,10 @@ def ExtraTau(entry, j, isGoodTau=False) :#NEED TO CHANGE THE GOOD AND BAD IDs
     """ tauFun.goodTau(): select good Tau
                                for Z -> tau + tau
     """
-    tt = selections['tt'] # selections for Z->tt
+    if isGoodTau:
+        tt = selections['tight_textra']
+    else:
+        tt = selections['loose_textra']
     if entry.Tau_pt[j] < tt['tau_pt']: return False
     if abs(entry.Tau_eta[j]) > tt['tau_eta']: return False
     if abs(entry.Tau_dz[j]) > tt['tau_dz']: return False
@@ -2108,15 +2117,13 @@ def findZtt(goodTauList, entry) :
 
 def findZandL(entry, goodElectronList, goodMuonList, goodTauList, isTightLep=False):
     mZ, bestDiff = 91.19, 99999.
-    extraEleList = getExtraElectronList(entry, goodElectronList, isGood=isTightLep)
+    '''extraEleList = getExtraElectronList(entry, goodElectronList, isGood=isTightLep)
     extraMuList = getExtraMuonList(entry, goodMuonList, isGood=isTightLep)
     extraTauList = getExtraTauList(entry, goodTauList, isGood=isTightLep)
+    '''
     #print(extraEleList, extraMuList, extraTauList)
     #find Z pair from goodLists and a fake lepton (no ID)
     bestZpair, Zpair, lep, cat = [], [], -99, ''
-    if len(extraEleList)+len(extraMuList)+len(extraTauList) < 1:
-        #print("no extra lepton found!")
-        return bestZpair, lep, cat
     if len(goodElectronList) < 2 and len(goodMuonList) < 2 and len(goodTauList) < 2:
         #print("Not enough good leptons to make Z!")
         return bestZpair, lep, cat
@@ -2140,6 +2147,10 @@ def findZandL(entry, goodElectronList, goodMuonList, goodTauList, isTightLep=Fal
             cat = 'tt'
             bestZpair = Zpair
     #print(bestZpair)
+
+    '''if len(extraEleList)+len(extraMuList)+len(extraTauList) < 1:
+        #print("no extra lepton found!")
+        return bestZpair, lep, cat
     pTcompare = -99
     l = 'G'#just some invalid name to initialize.
     if len(extraEleList) > 0:
@@ -2164,6 +2175,7 @@ def findZandL(entry, goodElectronList, goodMuonList, goodTauList, isTightLep=Fal
                 lep = ii
                 l = 't'
     cat += l
+    '''
     return bestZpair, lep, cat  
     
 
@@ -2285,6 +2297,7 @@ def simpleDCHpairing(entry, goodEleList, goodMuList, goodTauList):#actually it d
             lep3 = goodMuList[1]
         
         elif nMu ==2 and nTau == 1:
+            cat = 'mmt'
             lep1 = goodMuList[0]
             lep2 = goodMuList[1]    
             lep3 = goodTauList[0]

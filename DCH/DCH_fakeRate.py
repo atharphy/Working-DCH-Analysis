@@ -119,10 +119,9 @@ if MC :
     PU.calculateWeights(args.nickName,args.year)
 else :
     CJ = ''
-    if args.year == 2016 : CJ = GF.checkJSON(filein='Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt')
-    if args.year == 2017 : CJ = GF.checkJSON(filein='Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt')
-    if args.year == 2018 : CJ = GF.checkJSON(filein='Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt')
-
+    if args.year == 2016 : CJ = GF.checkJSON(filein='Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt')
+    if args.year == 2017 : CJ = GF.checkJSON(filein='Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt')
+    if args.year == 2018 : CJ = GF.checkJSON(filein='Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt')
 
 #print 'systematics', doJME
 
@@ -452,13 +451,43 @@ for count, e in enumerate( inTree) :
         '''
         #=========3-lep Z(ll) + extra lepton =====================================
         #print(len(goodElectronList),len(goodMuonList),len(goodTauList))
-        if len(goodElectronList) < 2 and len(goodMuonList) < 2 and len(goodTauList) < 2: continue
-        bestZpair, lep_3, cat3L = TF.findZandL(e, goodElectronList, goodMuonList, goodTauList, isTightLep=False)
-        #print (bestZpair, lep_3, cat3L)
-        if len(bestZpair) == 0 or lep_3 < 0 or cat3L == '': continue
+        isTightLep = True #change this for tight or loose extra lepton
+        extraEleList = TF.getExtraElectronList(e, goodElectronList, isGood=isTightLep)
+        extraMuList = TF.getExtraMuonList(e, goodMuonList, isGood=isTightLep)
+        extraTauList = TF.getExtraTauList(e, goodTauList, isGood=isTightLep)
         SVFit = False
         if not MC : isMC = False
-        outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+        if len(goodElectronList) < 2 and len(goodMuonList) < 2 and len(goodTauList) < 2: continue
+        bestZpair, lep_3, Zcat = TF.findZandL(e, goodElectronList, goodMuonList, goodTauList, isTightLep=isTightLep)
+        if len(bestZpair) == 0 or Zcat == '': continue
+        if len(extraEleList)+len(extraMuList)+len(extraTauList) < 1: continue
+        if len(extraEleList) > 0:
+            for i in range(len(extraEleList)):
+                ii = extraEleList[i]
+                pTcompare = -99
+                if e.Electron_pt[ii] > pTcompare:
+                    pTcompare = e.Electron_pt[ii]
+                    lep_3 = ii
+                    cat3L = Zcat+'e'
+                    outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+        if len(extraMuList) > 0:
+            for i in range(len(extraMuList)):
+                ii = extraMuList[i]
+                pTcompare = -99
+                if e.Muon_pt[ii] > pTcompare:
+                    pTcompare = e.Muon_pt[ii]
+                    lep_3 = ii
+                    cat3L = Zcat+'m'
+                    outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+        if len(extraTauList) > 0:
+            for i in range(len(extraTauList)):
+                ii = extraTauList[i]
+                pTcompare = -99
+                if e.Tau_pt[ii] > pTcompare:
+                    pTcompare = e.Tau_pt[ii]
+                    lep_3 = ii
+                    cat3L = Zcat+'t'
+                    outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
         continue
         ######## BELOW IS FOR DCH ANALYSIS, NOT NEEDED FOR FAKE RATE#####################
         
