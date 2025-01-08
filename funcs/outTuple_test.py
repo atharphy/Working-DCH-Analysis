@@ -64,18 +64,27 @@ class outTuple() :
                 self.evaluatorPU = _core.CorrectionSet.from_string(self.datasfPU)
         else:
             self.evaluatorPU = _core.CorrectionSet.from_file(self.fnamePU)
-        # Tau Decay types
-
-        self.evaluator=''
-        self.fname = "../tools/muon_Z_{0:s}.json.gz".format(str(era))
-        if self.fname.endswith(".json.gz"):
+        
+        self.evaluatorTau=''
+        self.fnameTau = "../tools/tau_{0:s}.json.gz".format(str(era))
+        if self.fnameTau.endswith(".json.gz"):
             import gzip
-            with gzip.open(self.fname,'rt') as file:
-                self.datasf = file.read().strip()
-                self.evaluator = _core.CorrectionSet.from_string(self.datasf)
+            with gzip.open(self.fnameTau,'rt') as file:
+                self.datasfTau = file.read().strip()
+                self.evaluatorTau = _core.CorrectionSet.from_string(self.datasfTau)
         else:
-            self.evaluator = _core.CorrectionSet.from_file(self.fname)
-        # Tau Decay types
+            self.evaluatorTau = _core.CorrectionSet.from_file(self.fnameTau)
+
+        self.evaluatorMu=''
+        self.fnameMu = "../tools/muon_Z_{0:s}.json.gz".format(str(era))
+        if self.fnameMu.endswith(".json.gz"):
+            import gzip
+            with gzip.open(self.fnameMu,'rt') as file:
+                self.datasfMu = file.read().strip()
+                self.evaluatorMu = _core.CorrectionSet.from_string(self.datasfMu)
+        else:
+            self.evaluatorMu = _core.CorrectionSet.from_file(self.fnameMu)
+        
         self.evaluatorEl=''
         self.fnameEl = "../tools/electron_{0:s}.json.gz".format(str(era))
         if self.fnameEl.endswith(".json.gz"):
@@ -86,11 +95,12 @@ class outTuple() :
         else:
             self.evaluatorEl = _core.CorrectionSet.from_file(self.fnameEl)
         # Tau Decay types
-        print ('initialized the UL SF from', self.fname, self.fnameEl)
+        print ('initialized the UL SF from', self.fnameEl, self.fnameMu, self.fnameTau)
         # TrackerMuon Reconstruction UL scale factor
-        #self.valsf = self.evaluator["NUM_MediumID_DEN_TrackerMuons"].evaluate("2017_UL", 1.1, 30.0, "sf")
+        #self.valsf = self.evaluatorMu["NUM_MediumID_DEN_TrackerMuons"].evaluate("2017_UL", 1.1, 30.0, "sf")
         #print("sf 1 is: " + str(self.valsf))
-        
+       
+
         ########### JetMet systematics
         #self.listsyst=['njets', 'nbtag', 'jpt', 'jeta', 'jflavour','MET_T1_pt', 'MET_T1_phi', 'MET_pt', 'MET_phi', 'MET_T1Smear_pt', 'MET_T1Smear_phi']
         self.jessyst=['_nom']
@@ -239,6 +249,23 @@ class outTuple() :
         self.MuID_2 = array('l',[0])
         self.MuID_3 = array('l',[0])
         self.MuID_4 = array('l',[0])
+        self.TauVsEleIDSF_1 = array('d',[0])
+        self.TauVsEleIDSF_2 = array('d',[0])
+        self.TauVsEleIDSF_3 = array('d',[0])
+        self.TauVsEleIDSF_4 = array('d',[0])
+        self.TauVsMuIDSF_1 = array('d',[0])
+        self.TauVsMuIDSF_2 = array('d',[0])
+        self.TauVsMuIDSF_3 = array('d',[0])
+        self.TauVsMuIDSF_4 = array('d',[0])
+        self.TauVsJetIDSF_1 = array('d',[0])
+        self.TauVsJetIDSF_2 = array('d',[0])
+        self.TauVsJetIDSF_3 = array('d',[0])
+        self.TauVsJetIDSF_4 = array('d',[0])
+        self.TauES_1 = array('d',[0])
+        self.TauES_2 = array('d',[0])
+        self.TauES_3 = array('d',[0])
+        self.TauES_4 = array('d',[0])
+
         
         self.nGoodElectron    = array('l',[0])
         self.nGoodMuon        = array('l',[0])
@@ -571,6 +598,22 @@ class outTuple() :
         self.t.Branch('MuID_2',           self.MuID_2,            'MuID_2/I' )
         self.t.Branch('MuID_3',           self.MuID_3,            'MuID_3/I' )
         self.t.Branch('MuID_4',           self.MuID_4,            'MuID_4/I' )
+        self.t.Branch('TauVsEleIDSF_1',  self.TauVsEleIDSF_1,  'TauVsEleIDSF_1/D' )
+        self.t.Branch('TauVsEleIDSF_2',  self.TauVsEleIDSF_2,  'TauVsEleIDSF_2/D' )
+        self.t.Branch('TauVsEleIDSF_3',  self.TauVsEleIDSF_3,  'TauVsEleIDSF_3/D' )
+        self.t.Branch('TauVsEleIDSF_4',  self.TauVsEleIDSF_4,  'TauVsEleIDSF_4/D' )
+        self.t.Branch('TauVsMuIDSF_1',  self.TauVsMuIDSF_1,  'TauVsMuIDSF_1/D' )
+        self.t.Branch('TauVsMuIDSF_2',  self.TauVsMuIDSF_2,  'TauVsMuIDSF_2/D' )
+        self.t.Branch('TauVsMuIDSF_3',  self.TauVsMuIDSF_3,  'TauVsMuIDSF_3/D' )
+        self.t.Branch('TauVsMuIDSF_4',  self.TauVsMuIDSF_4,  'TauVsMuIDSF_4/D' )
+        self.t.Branch('TauVsJetIDSF_1',  self.TauVsJetIDSF_1,  'TauVsJetIDSF_1/D' )
+        self.t.Branch('TauVsJetIDSF_2',  self.TauVsJetIDSF_2,  'TauVsJetIDSF_2/D' )
+        self.t.Branch('TauVsJetIDSF_3',  self.TauVsJetIDSF_3,  'TauVsJetIDSF_3/D' )
+        self.t.Branch('TauVsJetIDSF_4',  self.TauVsJetIDSF_4,  'TauVsJetIDSF_4/D' )
+        self.t.Branch('TauES_1',  self.TauES_1,  'TauES_1/D' )
+        self.t.Branch('TauES_2',  self.TauES_2,  'TauES_2/D' )
+        self.t.Branch('TauES_3',  self.TauES_3,  'TauES_3/D' )
+        self.t.Branch('TauES_4',  self.TauES_4,  'TauES_4/D' )
 
         self.t.Branch('nGoodElectron',    self.nGoodElectron,     'nGoodElectron/I' )
         self.t.Branch('nGoodMuon',        self.nGoodMuon,         'nGoodMuon/I' )
@@ -1517,6 +1560,22 @@ class outTuple() :
             self.MuID_2[0] = -99
             self.MuID_3[0] = -99
             self.MuID_4[0] = -99
+            self.TauVsEleIDSF_1[0] = 1
+            self.TauVsEleIDSF_2[0] = 1
+            self.TauVsEleIDSF_3[0] = 1
+            self.TauVsEleIDSF_4[0] = 1
+            self.TauVsMuIDSF_1[0] = 1
+            self.TauVsMuIDSF_2[0] = 1
+            self.TauVsMuIDSF_3[0] = 1
+            self.TauVsMuIDSF_4[0] = 1
+            self.TauVsJetIDSF_1[0] = 1
+            self.TauVsJetIDSF_2[0] = 1
+            self.TauVsJetIDSF_3[0] = 1
+            self.TauVsJetIDSF_4[0] = 1
+            self.TauES_1[0] = 1
+            self.TauES_2[0] = 1
+            self.TauES_3[0] = 1
+            self.TauES_4[0] = 1
 
             try :
                 self.weight[0]           = entry.genWeight
@@ -2824,6 +2883,11 @@ class outTuple() :
         self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
         self.IDSF_4[0], self.ISOSF_4[0], self.TrigSF_4[0] = self.getIDISOTrigSF(era, yearin, cat[3], Lep4.Pt(), Lep4.Eta(), Lep4.Phi(),  isMC)
 
+        if cat[0]=='t': self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0] = self.getTauIDSFs(entry.Tau_pt[jl1],entry.Tau_eta[jl1], entry.Tau_decayMode[jl1], ord(chr(entry.Tau_genPartFlav[jl1])),"Loose","Medium","Medium",isMC, "nom")
+        if cat[1]=='t': self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0] = self.getTauIDSFs(entry.Tau_pt[jl2],entry.Tau_eta[jl2], entry.Tau_decayMode[jl2], ord(chr(entry.Tau_genPartFlav[jl2])),"Loose","Medium","Medium",isMC, "nom")
+        if cat[2]=='t': self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0] = self.getTauIDSFs(entry.Tau_pt[jl3],entry.Tau_eta[jl3], entry.Tau_decayMode[jl3], ord(chr(entry.Tau_genPartFlav[jl3])),"Loose","Medium","Medium",isMC, "nom")
+        if cat[3]=='t': self.TauVsEleIDSF_4[0], self.TauVsMuIDSF_4[0], self.TauVsJetIDSF_4[0], self.TauES_4[0] = self.getTauIDSFs(entry.Tau_pt[jl4],entry.Tau_eta[jl4], entry.Tau_decayMode[jl4], ord(chr(entry.Tau_genPartFlav[jl4])),"Loose","Medium","Medium",isMC, "nom")
+
         return
 
     def Fill3L(self, entry, SVFit, cat,gen_cat,br_weight, idx_DCH1, jl3, isMC, era, doUncertainties=False ,  met_pt=-99, met_phi=-99, systIndex=0, tMass=[], tPt=[], eMass=[], ePt=[], mMass=[], mPt=[], proc="EOY") :
@@ -3061,6 +3125,22 @@ class outTuple() :
             self.MuID_2[0] = -99
             self.MuID_3[0] = -99
             self.MuID_4[0] = -99
+            self.TauVsEleIDSF_1[0] = 1
+            self.TauVsEleIDSF_2[0] = 1
+            self.TauVsEleIDSF_3[0] = 1
+            self.TauVsEleIDSF_4[0] = 1
+            self.TauVsMuIDSF_1[0] = 1
+            self.TauVsMuIDSF_2[0] = 1
+            self.TauVsMuIDSF_3[0] = 1
+            self.TauVsMuIDSF_4[0] = 1
+            self.TauVsJetIDSF_1[0] = 1
+            self.TauVsJetIDSF_2[0] = 1
+            self.TauVsJetIDSF_3[0] = 1
+            self.TauVsJetIDSF_4[0] = 1
+            self.TauES_1[0] = 1
+            self.TauES_2[0] = 1
+            self.TauES_3[0] = 1
+            self.TauES_4[0] = 1
 
             try :
                 self.weight[0]           = entry.genWeight
@@ -4094,9 +4174,12 @@ class outTuple() :
         self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(),  isMC)
         self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(),  isMC)
 
-        if jl3 > -1: self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
-        #self.IDSF_4[0], self.ISOSF_4[0], self.TrigSF_4[0] = self.getIDISOTrigSF(era, yearin, cat[3], Lep4.Pt(), Lep4.Eta(), Lep4.Phi(),  isMC)
+        if cat[0]=='t': self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0] = self.getTauIDSFs(entry.Tau_pt[jl1],entry.Tau_eta[jl1], entry.Tau_decayMode[jl1], ord(chr(entry.Tau_genPartFlav[jl1])),"Loose","Medium","Medium",isMC, "nom")
+        if cat[1]=='t': self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0] = self.getTauIDSFs(entry.Tau_pt[jl2],entry.Tau_eta[jl2], entry.Tau_decayMode[jl2], ord(chr(entry.Tau_genPartFlav[jl2])),"Loose","Medium","Medium",isMC, "nom") 
 
+        if jl3 > -1: 
+            self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
+            if cat[2]=='t': self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0] = self.getTauIDSFs(entry.Tau_pt[jl3],entry.Tau_eta[jl3], entry.Tau_decayMode[jl3], ord(chr(entry.Tau_genPartFlav[jl3])),"Loose","Medium","Medium",isMC, "nom")
         return
 
 
@@ -4125,20 +4208,34 @@ class outTuple() :
             eff_trig_mc =  self.sf_EleTrig.get_EfficiencyMC(lep_pt,lep_eta)
             if eff_trig_mc !=0 : trig_sf = float(eff_trig_d/eff_trig_mc)
     	elif lep_flav == 'm':	
-            if lep_pt> 15 : id_sf = self.evaluator["NUM_TightID_DEN_TrackerMuons"].evaluate("{0:s}_UL".format( str(yearin)), abs(lep_eta), lep_pt, "sf")
+            if lep_pt> 15 : id_sf = self.evaluatorMu["NUM_TightID_DEN_TrackerMuons"].evaluate("{0:s}_UL".format( str(yearin)), abs(lep_eta), lep_pt, "sf")
             #as a lazy hack I multiply iso and reco SF together to reduce branches.
-            if lep_pt> 15 : iso_sf = self.evaluator["NUM_TightRelIso_DEN_TightIDandIPCut"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")*self.evaluator["NUM_TrackerMuons_DEN_genTracks"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf") 
+            if lep_pt> 15 : iso_sf = self.evaluatorMu["NUM_TightRelIso_DEN_TightIDandIPCut"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")*self.evaluatorMu["NUM_TrackerMuons_DEN_genTracks"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf") 
             if era == '2016' : 
-                if lep_pt > 26  : trig_sf = self.evaluator["NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")
+                if lep_pt > 26  : trig_sf = self.evaluatorMu["NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")
                 #NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight  
             if era =='2017' :  
-                if lep_pt > 29 : trig_sf = self.evaluator["NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")
+                if lep_pt > 29 : trig_sf = self.evaluatorMu["NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")
             if era =='2018' :  
-                if lep_pt > 26 : trig_sf = self.evaluator["NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")  ### for 2018 the json Veto only 24 SF..but we have used the HLT27
+                if lep_pt > 26 : trig_sf = self.evaluatorMu["NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")  ### for 2018 the json Veto only 24 SF..but we have used the HLT27
     	#print (id_sf, iso_sf, trig_sf)
     	return id_sf, iso_sf, trig_sf
-				
 
+    def getTauIDSFs(self, tau_pt, tau_eta, dm, tauGenPartFlav, tauVeleWP, tauVmuWP, tauVjetWP,isMC, variation):
+        tauVsEle_sf=1.
+        tauVsMu_sf=1.
+        tauVsJet_sf=1.
+        tauES=1.
+        if not isMC : return tauVsEle_sf, tauVsMu_sf, tauVsJet_sf, tauES
+        tauVsEle_sf = self.evaluatorTau["DeepTau2017v2p1VSe"].evaluate(tau_eta,tauGenPartFlav,tauVeleWP,variation)
+        #print(tauVsEle_sf)
+        tauVsMu_sf = self.evaluatorTau["DeepTau2017v2p1VSmu"].evaluate(tau_eta,tauGenPartFlav,tauVmuWP,variation)
+        #print(tauVsMu_sf)
+        tauVsJet_sf = self.evaluatorTau["DeepTau2017v2p1VSjet"].evaluate(tau_pt,dm,tauGenPartFlav,tauVjetWP,"Tight",variation,"pt")
+        #print(tauVsJet_sf)
+        tauES = self.evaluatorTau["tau_energy_scale"].evaluate(tau_pt,tau_eta,dm,tauGenPartFlav,"DeepTau2017v2p1", variation)
+        #print(tauES)
+        return tauVsEle_sf, tauVsMu_sf, tauVsJet_sf, tauES
     	
 
     def FillTree(self) :
