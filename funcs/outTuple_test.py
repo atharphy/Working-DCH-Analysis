@@ -2,11 +2,11 @@
 
 from ROOT import TLorentzVector, TH1
 from math import sqrt, sin, cos, pi
-import tauFunDCH_test as tauFunDCH
+import tauFunDCH as tauFunDCH
 import ROOT, array
 import os
 import sys
-import generalFunctions_test as GF
+import generalFunctions as GF
 import ScaleFactor as SF
 
 from correctionlib import _core
@@ -2872,21 +2872,22 @@ class outTuple() :
 
         '''
 
-        #if  self.nbtag[0] == 0 : 
-        if SystIndex == 0 : 
-            self.t.Fill()
-        else : 
-            self.tN[SystIndex-1].Fill()
-
         self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(),  isMC)
         self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(),  isMC)
         self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
         self.IDSF_4[0], self.ISOSF_4[0], self.TrigSF_4[0] = self.getIDISOTrigSF(era, yearin, cat[3], Lep4.Pt(), Lep4.Eta(), Lep4.Phi(),  isMC)
 
-        if cat[0]=='t': self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0] = self.getTauIDSFs(entry.Tau_pt[jl1],entry.Tau_eta[jl1], entry.Tau_decayMode[jl1], ord(chr(entry.Tau_genPartFlav[jl1])),"Loose","Medium","Medium",isMC, "nom")
-        if cat[1]=='t': self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0] = self.getTauIDSFs(entry.Tau_pt[jl2],entry.Tau_eta[jl2], entry.Tau_decayMode[jl2], ord(chr(entry.Tau_genPartFlav[jl2])),"Loose","Medium","Medium",isMC, "nom")
-        if cat[2]=='t': self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0] = self.getTauIDSFs(entry.Tau_pt[jl3],entry.Tau_eta[jl3], entry.Tau_decayMode[jl3], ord(chr(entry.Tau_genPartFlav[jl3])),"Loose","Medium","Medium",isMC, "nom")
-        if cat[3]=='t': self.TauVsEleIDSF_4[0], self.TauVsMuIDSF_4[0], self.TauVsJetIDSF_4[0], self.TauES_4[0] = self.getTauIDSFs(entry.Tau_pt[jl4],entry.Tau_eta[jl4], entry.Tau_decayMode[jl4], ord(chr(entry.Tau_genPartFlav[jl4])),"Loose","Medium","Medium",isMC, "nom")
+        if isMC:
+            if cat[0]=='t': self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0] = self.getTauIDSFs(entry.Tau_pt[jl1],entry.Tau_eta[jl1], entry.Tau_decayMode[jl1], ord(chr(entry.Tau_genPartFlav[jl1])),"VVLoose","Medium","Medium",isMC, "nom")
+            if cat[1]=='t': self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0] = self.getTauIDSFs(entry.Tau_pt[jl2],entry.Tau_eta[jl2], entry.Tau_decayMode[jl2], ord(chr(entry.Tau_genPartFlav[jl2])),"VVLoose","Medium","Medium",isMC, "nom")
+            if cat[2]=='t': self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0] = self.getTauIDSFs(entry.Tau_pt[jl3],entry.Tau_eta[jl3], entry.Tau_decayMode[jl3], ord(chr(entry.Tau_genPartFlav[jl3])),"VVLoose","Medium","Medium",isMC, "nom")
+            if cat[3]=='t': self.TauVsEleIDSF_4[0], self.TauVsMuIDSF_4[0], self.TauVsJetIDSF_4[0], self.TauES_4[0] = self.getTauIDSFs(entry.Tau_pt[jl4],entry.Tau_eta[jl4], entry.Tau_decayMode[jl4], ord(chr(entry.Tau_genPartFlav[jl4])),"VVLoose","Medium","Medium",isMC, "nom")
+
+        #if  self.nbtag[0] == 0 : 
+        if SystIndex == 0 :
+            self.t.Fill()
+        else :
+            self.tN[SystIndex-1].Fill()
 
         return
 
@@ -4165,21 +4166,23 @@ class outTuple() :
 
         '''
 
-        #if  self.nbtag[0] == 0 : 
-        if SystIndex == 0 : 
-            self.t.Fill()
-        else : 
-            self.tN[SystIndex-1].Fill()
-
         self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(),  isMC)
         self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(),  isMC)
-
-        if cat[0]=='t': self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0] = self.getTauIDSFs(entry.Tau_pt[jl1],entry.Tau_eta[jl1], entry.Tau_decayMode[jl1], ord(chr(entry.Tau_genPartFlav[jl1])),"Loose","Medium","Medium",isMC, "nom")
-        if cat[1]=='t': self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0] = self.getTauIDSFs(entry.Tau_pt[jl2],entry.Tau_eta[jl2], entry.Tau_decayMode[jl2], ord(chr(entry.Tau_genPartFlav[jl2])),"Loose","Medium","Medium",isMC, "nom") 
-
+        if isMC:
+            if cat[0]=='t': self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0] = self.getTauIDSFs(entry.Tau_pt[jl1],entry.Tau_eta[jl1], entry.Tau_decayMode[jl1], ord(chr(entry.Tau_genPartFlav[jl1])),"VVLoose","Medium","Medium",isMC, "nom")
+            if cat[1]=='t': self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0] = self.getTauIDSFs(entry.Tau_pt[jl2],entry.Tau_eta[jl2], entry.Tau_decayMode[jl2], ord(chr(entry.Tau_genPartFlav[jl2])),"VVLoose","Medium","Medium",isMC, "nom") 
+            #print (self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0],self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0])
         if jl3 > -1: 
             self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
-            if cat[2]=='t': self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0] = self.getTauIDSFs(entry.Tau_pt[jl3],entry.Tau_eta[jl3], entry.Tau_decayMode[jl3], ord(chr(entry.Tau_genPartFlav[jl3])),"Loose","Medium","Medium",isMC, "nom")
+            if isMC and cat[2]=='t': self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0] = self.getTauIDSFs(entry.Tau_pt[jl3],entry.Tau_eta[jl3], entry.Tau_decayMode[jl3], ord(chr(entry.Tau_genPartFlav[jl3])),"VVLoose","Medium","Medium",isMC, "nom")
+            #print (self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0])
+        
+        #if  self.nbtag[0] == 0 : 
+        if SystIndex == 0 :
+            self.t.Fill()
+        else :
+            self.tN[SystIndex-1].Fill()
+
         return
 
 
@@ -4231,7 +4234,7 @@ class outTuple() :
         #print(tauVsEle_sf)
         tauVsMu_sf = self.evaluatorTau["DeepTau2017v2p1VSmu"].evaluate(tau_eta,tauGenPartFlav,tauVmuWP,variation)
         #print(tauVsMu_sf)
-        tauVsJet_sf = self.evaluatorTau["DeepTau2017v2p1VSjet"].evaluate(tau_pt,dm,tauGenPartFlav,tauVjetWP,"Tight",variation,"pt")
+        tauVsJet_sf = self.evaluatorTau["DeepTau2017v2p1VSjet"].evaluate(tau_pt,dm,tauGenPartFlav,tauVjetWP,"VVLoose",variation,"pt")
         #print(tauVsJet_sf)
         tauES = self.evaluatorTau["tau_energy_scale"].evaluate(tau_pt,tau_eta,dm,tauGenPartFlav,"DeepTau2017v2p1", variation)
         #print(tauES)

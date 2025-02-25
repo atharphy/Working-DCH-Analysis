@@ -462,32 +462,32 @@ for count, e in enumerate( inTree) :
         if len(bestZpair) == 0 or Zcat == '': continue
         if len(extraEleList)+len(extraMuList)+len(extraTauList) < 1: continue
         if len(extraEleList) > 0:
+            pTcompare = -99
             for i in range(len(extraEleList)):
                 ii = extraEleList[i]
-                pTcompare = -99
                 if e.Electron_pt[ii] > pTcompare:
                     pTcompare = e.Electron_pt[ii]
                     lep_3 = ii
-                    cat3L = Zcat+'e'
-                    outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+            cat3L = Zcat+'e'
+            outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
         if len(extraMuList) > 0:
+            pTcompare = -99
             for i in range(len(extraMuList)):
                 ii = extraMuList[i]
-                pTcompare = -99
                 if e.Muon_pt[ii] > pTcompare:
                     pTcompare = e.Muon_pt[ii]
                     lep_3 = ii
-                    cat3L = Zcat+'m'
-                    outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+            cat3L = Zcat+'m'
+            outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
         if len(extraTauList) > 0:
+            pTcompare = -99
             for i in range(len(extraTauList)):
                 ii = extraTauList[i]
-                pTcompare = -99
                 if e.Tau_pt[ii] > pTcompare:
                     pTcompare = e.Tau_pt[ii]
                     lep_3 = ii
-                    cat3L = Zcat+'t'
-                    outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
+            cat3L = Zcat+'t'
+            outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestZpair,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
         continue
         ######## BELOW IS FOR DCH ANALYSIS, NOT NEEDED FOR FAKE RATE#####################
         

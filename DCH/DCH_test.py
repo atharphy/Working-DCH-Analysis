@@ -322,33 +322,29 @@ for count, e in enumerate( inTree) :
     if not TF.goodTrigger(e,args.year) and printOn :   print((cat, e.run, e.luminosityBlock,  e.event, 'Triggers not present...'))
     if not TF.goodTrigger(e, args.year) : continue
 
-    if MC and args.year == 2018:
-        '''TrigCount.count('notrig')
-        if e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf or e.HLT_IsoMu24 or  e.HLT_IsoMu27 : 
-            TrigCount.count('sin_lep')
-        if e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf or e.HLT_IsoMu24 or e.HLT_IsoMu27 or e.HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ or e.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ :
-            TrigCount.count('di_lep')
-        if e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf or e.HLT_IsoMu24 or e.HLT_IsoMu27 or e.HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ or e.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ :
-            TrigCount.count('di_lepT')    
-        if e.HLT_Ele32_WPTight_Gsf : TrigCount.count('eTrig1')
-        if e.HLT_Ele35_WPTight_Gsf : TrigCount.count('eTrig2')
-        if e.HLT_IsoMu24 :  TrigCount.count('muTrig1')
-        if e.HLT_IsoMu27 :  TrigCount.count('muTrig2')
-        '''
-        if not ( e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf or e.HLT_IsoMu24 or  e.HLT_IsoMu27 ): continue
+    if MC:
+        if args.year == 2016 and not (e.HLT_IsoMu22 or e.HLT_IsoMu22_eta2p1 or e.HLT_IsoTkMu22 or e.HLT_IsoTkMu22_eta2p1 or e.HLT_Ele25_eta2p1_WPTight_Gsf or e.HLT_Ele27_eta2p1_WPTight_Gsf or e.HLT_IsoMu24 or e.HLT_IsoTkMu24 or e.HLT_IsoMu27): continue
+        if (args.year == 2017 or args.year == 2018) and not (e.HLT_Ele27_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf or e.HLT_Ele32_WPTight_Gsf or e.HLT_IsoMu24 or e.HLT_IsoMu27): continue
 
-    elif not MC and args.year == 2018:
-        #TrigCount.count('notrig')
-        '''
-        if 'SingleMuon' in args.nickName and not (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
-        elif 'EGamma' in args.nickName:
-            if (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
-            if not (e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
-        '''
-        if 'EGamma' in args.nickName and not (e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
-        elif 'SingleMuon' in args.nickName:
-            if (e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
-            if not (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
+    elif not MC:
+        if args.year == 2016:
+            if 'SingleMuon' in args.nickName:
+                if not (e.HLT_IsoMu22 or e.HLT_IsoMu22_eta2p1 or e.HLT_IsoTkMu22 or e.HLT_IsoTkMu22_eta2p1 or e.HLT_IsoMu24 or e.HLT_IsoTkMu24 or e.HLT_IsoMu27) : continue
+            elif 'EGamma' or 'SingleElectron' in args.nickName:
+                if (e.HLT_IsoMu22 or e.HLT_IsoMu22_eta2p1 or e.HLT_IsoTkMu22 or e.HLT_IsoTkMu22_eta2p1 or e.HLT_IsoMu24 or e.HLT_IsoTkMu24 or e.HLT_IsoMu27) : continue
+                if not (e.HLT_Ele25_eta2p1_WPTight_Gsf or e.HLT_Ele27_eta2p1_WPTight_Gsf): continue
+        if args.year == 2017 or args.year == 2018:
+            #TrigCount.count('notrig')
+            if 'SingleMuon' in args.nickName:
+                if not (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
+            elif 'EGamma' or 'SingleElectron' in args.nickName:
+                if (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
+                if not (e.HLT_Ele27_WPTight_Gsf or e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
+            '''if 'EGamma' in args.nickName and not ( e.HLT_Ele27_WPTight_Gsf or e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
+            elif 'SingleMuon' in args.nickName:
+                if (e.HLT_Ele27_WPTight_Gsf or e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
+                if not (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
+            '''
 
     '''for cat in cats: 
         isTrig=False
@@ -371,11 +367,9 @@ for count, e in enumerate( inTree) :
             cutCounter[cat].count('Lep_Trig2')
             if  MC :   cutCounterGenWeight[cat].countGenWeight('Lep_Trig2', e.genWeight)
     '''
-
     met_pt = float(e.MET_pt)
     met_phi = float(e.MET_phi)
-
-
+    
     if doJME :  #default after JME systematics with Smear
         if era!='2017' :
             try : 
@@ -458,7 +452,7 @@ for count, e in enumerate( inTree) :
         continue
         '''
         #===================no pairing==============
-        if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 2:
+        '''if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 2:
             bestDCH1 = [] #these are just containers for keeping the code simple, no pairing is done!
             lep1, lep2, lep3, lep4, cat2L = TF.simpleDCHpairing(e, goodElectronList, goodMuonList, goodTauList)
             bestDCH1 = [lep1, lep2]
@@ -499,7 +493,7 @@ for count, e in enumerate( inTree) :
             if not MC : isMC = False
             outTuple.Fill(e,SVFit,cat,gen_cat, br_weight, bestDCH1,bestDCH2,isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
         continue
-        
+        '''    
         #=============3-lep=====================================
         if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 3:
             evts_3lep += 1
