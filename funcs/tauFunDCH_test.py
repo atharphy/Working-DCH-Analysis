@@ -16,7 +16,7 @@ sys.path.append('../TauPOG')
 
 
 # get selections from configZH.yaml:
-with io.open('cuts.yaml', 'r') as stream:
+with io.open('cuts_test.yaml', 'r') as stream:
     selections = yaml.load(stream, Loader=yaml.Loader)
 print("Using selections:\n", selections)
 
@@ -1590,7 +1590,7 @@ def ExtraMuon(entry, j, isGoodMu=False):
     if isGoodMu:
         if mm['mu_ID'] and not entry.Muon_tightId[j]: return False
     else:
-        if mm['mu_ID'] and entry.Muon_looseId[j]: return False
+        if mm['mu_ID'] and not entry.Muon_looseId[j]: return False
     return True 
 
 def getExtraMuonList(entry, listMu, isGood=False):
@@ -1622,7 +1622,7 @@ def ExtraElectron(entry, j, isGoodElectron=False) :
     if isGoodElectron:
         if ee['ele_ID'] and not entry.Electron_mvaFall17V2noIso_WP90[j] : return False
     else:
-        if ee['ele_ID'] and entry.Electron_mvaFall17V2noIso_WPL[j]: return False
+        if ee['ele_ID'] and not entry.Electron_mvaFall17V2noIso_WPL[j]: return False
     return True 
 
 def getExtraElectronList(entry, listEl, isGood=False):
@@ -1787,56 +1787,46 @@ def eliminateCloseLeptons(entry, goodElectronList, goodMuonList) :
 
     return goodElectronList, goodMuonList
 
-def findETrigger(goodElectronList,entry,era):
-    EltrigList =[]
-    nElectron = len(goodElectronList)
-    
-    if nElectron > 1 :
-        if era == '2016' and not entry.HLT_Ele27_WPTight_Gsf : return EltrigList
-        if era == '2017' and not entry.HLT_Ele35_WPTight_Gsf : return EltrigList
-        for i in range(nElectron) :
-            
-            ii = goodElectronList[i]
-            if era == '2016' and entry.Electron_pt[ii] < 29 : continue
-            if era == '2017' and entry.Electron_pt[ii] < 37 : continue
-            #print("Electron: pt={0:.1f} eta={1:.2f} phi={2:.2f}".format(entry.Electron_pt[ii], entry.Electron_eta[ii], entry.Electron_phi[ii]))
-            #e1 = TLorentzVector()
-            #e1.SetPtEtaPhiM(entry.Electron_pt[ii],entry.Electron_eta[ii],entry.Electron_phi[ii],0.0005)
+def isETriggered(entry,ele_idx,era):    
+    isTrigFired = False
 
-            for iobj in range(0,entry.nTrigObj) :
-                dR = DRobj(entry.Electron_eta[ii],entry.Electron_phi[ii], entry.TrigObj_eta[iobj], entry.TrigObj_phi[iobj])
-                #print("    Trg Obj: eta={0:.2f} phi={1:.2f} dR={2:.2f} bits={3:x}".format(
+    if era == '2016' and (not entry.HLT_Ele27_WPTight_Gsf or entry.Electron_pt[ele_idx] < 29) : return isTrigFired
+    elif era == '2017' and (not entry.HLT_Ele35_WPTight_Gsf or entry.Electron_pt[ele_idx] < 37): return isTrigFired
+    elif era == '2018' and (not entry.HLT_Ele32_WPTight_Gsf or entry.Electron_pt[ele_idx] < 34) : return isTrigFired
+        
+    #print("Electron: pt={0:.1f} eta={1:.2f} phi={2:.2f}".format(entry.Electron_pt[ele_idx], entry.Electron_eta[ele_idx], entry.Electron_phi[ele_idx]))
+    #e1 = TLorentzVector()
+    #e1.SetPtEtaPhiM(entry.Electron_pt[ele_idx],entry.Electron_eta[ele_idx],entry.Electron_phi[ele_idx],0.0005)
+
+    for iobj in range(entry.nTrigObj) :
+        if entry.TrigObj_id[iobj] != 11: continue
+        dR = DRobj(entry.Electron_eta[ele_idx],entry.Electron_phi[ele_idx], entry.TrigObj_eta[iobj], entry.TrigObj_phi[iobj])
+        #print("    Trg Obj: eta={0:.2f} phi={1:.2f} dR={2:.2f} bits={3:x}".format(
                     #entry.TrigObj_eta[iobj], entry.TrigObj_phi[iobj], dR, entry.TrigObj_filterBits[iobj]))
-                if entry.TrigObj_filterBits[iobj] & 2  and dR < 0.5: ##that corresponds 0 WPTight
-                    EltrigList.append(ii)
-                    #print "======================= iobj", iobj, "entry.Trig",entry.TrigObj_id[iobj], "Bits", entry.TrigObj_filterBits[iobj]," dR", dR, "electron",i,"ii",ii,entry.TrigObj_id[iobj]
+        if entry.TrigObj_filterBits[iobj] & 2  and dR < 0.1:
+            isTrigFired = True
+            #print "======================= iobj", iobj, "entry.Trig",entry.TrigObj_id[iobj], "Bits", entry.TrigObj_filterBits[iobj]," dR", dR, "electron",i,"ii",ii,entry.TrigObj_id[iobj]
 
-    return EltrigList
+    return isTrigFired
 
+def isMuTriggered(entry,mu_idx,era):
+    isTrigFired = False
 
-def findMuTrigger(goodMuonList,entry,era):
-    MutrigList =[]
-    nMuon = len(goodMuonList)
-    
-    if nMuon > 1 :
-        if era == '2016' and not entry.HLT_IsoMu24 : return MutrigList
-        if era == '2017' and not entry.HLT_IsoMu27 : return MutrigList
-        for i in range(nMuon) :
+    if era == '2016' and (not (entry.HLT_IsoMu24 or entry.HLT_IsoTkMu24) or entry.Muon_pt[mu_idx] < 26): return isTrigFired
+    elif era == '2017' and (not entry.HLT_IsoMu27 or entry.Muon_pt[mu_idx] < 29) : return isTrigFired
+    elif era == '2018' and (not entry.HLT_IsoMu24 or entry.Muon_pt[mu_idx] < 26) : return isTrigFired
+    #print("Muon: pt={0:.1f} eta={1:.4f} phi={2:.4f}".format(entry.Muon_pt[mu_idx], entry.Muon_eta[mu_idx], entry.Muon_phi[mu_idx]))
             
-
-            ii = goodMuonList[i] 
-            if era == '2016' and entry.Muon_pt[ii] < 26 : continue
-            if era == '2017' and entry.Muon_pt[ii] < 29 : continue
-            #print("Muon: pt={0:.1f} eta={1:.4f} phi={2:.4f}".format(entry.Muon_pt[ii], entry.Muon_eta[ii], entry.Muon_phi[ii]))
-            for iobj in range(0,entry.nTrigObj) :
-                dR = DRobj(entry.Muon_eta[ii],entry.Muon_phi[ii], entry.TrigObj_eta[iobj], entry.TrigObj_phi[iobj])
-                #print("    Trg Obj: eta={0:.4f} phi={1:.4f} dR={2:.4f} bits={3:x}".format(
+    for iobj in range(entry.nTrigObj) :
+        if entry.TrigObj_id[iobj] != 13: continue
+        dR = DRobj(entry.Muon_eta[mu_idx],entry.Muon_phi[mu_idx], entry.TrigObj_eta[iobj], entry.TrigObj_phi[iobj])
+        #print("    Trg Obj: eta={0:.4f} phi={1:.4f} dR={2:.4f} bits={3:x}".format(
                 #    entry.TrigObj_eta[iobj], entry.TrigObj_phi[iobj], dR, entry.TrigObj_filterBits[iobj]))
-                if entry.TrigObj_filterBits[iobj] & 8 or entry.TrigObj_filterBits[iobj] & 2 and dR < 0.5: ##that corresponds to Muon Trigger
-                    MutrigList.append(ii)
-                #print "======================= and === iobj", iobj, entry.TrigObj_id[iobj], "Bits", entry.TrigObj_filterBits[iobj]," dR", dR, "electron",i
+        if (entry.TrigObj_filterBits[iobj] & 8 or entry.TrigObj_filterBits[iobj] & 2) and dR < 0.1: 
+            isTrigFired = True
+            #print ("======================= and === iobj", iobj, entry.TrigObj_id[iobj], "Bits", entry.TrigObj_filterBits[iobj]," dR", dR)
 
-    return MutrigList
+    return isTrigFired
 
 def ComparepT(El, Mu, entry) :
     if entry.Electron_pt[El] > entry.Muon_pt[Mu] : return True

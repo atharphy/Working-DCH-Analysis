@@ -220,9 +220,7 @@ sysT=['Central']
 #print (sysT)
 
 isMC = True
-if not MC : 
-    sysT = ["Central"]
-    isMC = False
+if not MC : isMC = False
 
 #sysT = ["Central"]
 doSyst= False
@@ -323,23 +321,29 @@ for count, e in enumerate( inTree) :
     if not TF.goodTrigger(e, args.year) : continue
 
     if MC:
-        if args.year == 2016 and not (e.HLT_IsoMu22 or e.HLT_IsoMu22_eta2p1 or e.HLT_IsoTkMu22 or e.HLT_IsoTkMu22_eta2p1 or e.HLT_Ele25_eta2p1_WPTight_Gsf or e.HLT_Ele27_eta2p1_WPTight_Gsf or e.HLT_IsoMu24 or e.HLT_IsoTkMu24 or e.HLT_IsoMu27): continue
-        if (args.year == 2017 or args.year == 2018) and not (e.HLT_Ele27_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf or e.HLT_Ele32_WPTight_Gsf or e.HLT_IsoMu24 or e.HLT_IsoMu27): continue
+        if args.year == 2016 and not (e.HLT_Ele27_WPTight_Gsf or e.HLT_IsoMu24 or e.HLT_IsoTkMu24): continue
+        elif args.year == 2017 and not ( e.HLT_IsoMu27 or e.HLT_Ele35_WPTight_Gsf): continue
+        elif args.year == 2018 and not ( e.HLT_IsoMu24 or e.HLT_Ele32_WPTight_Gsf): continue
 
     elif not MC:
         if args.year == 2016:
             if 'SingleMuon' in args.nickName:
-                if not (e.HLT_IsoMu22 or e.HLT_IsoMu22_eta2p1 or e.HLT_IsoTkMu22 or e.HLT_IsoTkMu22_eta2p1 or e.HLT_IsoMu24 or e.HLT_IsoTkMu24 or e.HLT_IsoMu27) : continue
+                if not (e.HLT_IsoMu24 or e.HLT_IsoTkMu24 ) : continue
             elif 'EGamma' or 'SingleElectron' in args.nickName:
-                if (e.HLT_IsoMu22 or e.HLT_IsoMu22_eta2p1 or e.HLT_IsoTkMu22 or e.HLT_IsoTkMu22_eta2p1 or e.HLT_IsoMu24 or e.HLT_IsoTkMu24 or e.HLT_IsoMu27) : continue
-                if not (e.HLT_Ele25_eta2p1_WPTight_Gsf or e.HLT_Ele27_eta2p1_WPTight_Gsf): continue
-        if args.year == 2017 or args.year == 2018:
-            #TrigCount.count('notrig')
+                if (e.HLT_IsoMu24 or e.HLT_IsoTkMu24 ) : continue
+                if not (e.HLT_Ele27_WPTight_Gsf): continue
+        elif args.year == 2017:
             if 'SingleMuon' in args.nickName:
-                if not (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
+                if not ( e.HLT_IsoMu27 ) : continue
             elif 'EGamma' or 'SingleElectron' in args.nickName:
-                if (e.HLT_IsoMu24 or  e.HLT_IsoMu27 ) : continue
-                if not (e.HLT_Ele27_WPTight_Gsf or e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
+                if ( e.HLT_IsoMu27 ) : continue
+                if not (e.HLT_Ele35_WPTight_Gsf): continue
+        elif args.year == 2018:
+            if 'SingleMuon' in args.nickName:
+                if not (e.HLT_IsoMu24 ) : continue
+            elif 'EGamma' or 'SingleElectron' in args.nickName:
+                if (e.HLT_IsoMu24) : continue
+                if not (e.HLT_Ele32_WPTight_Gsf): continue
             '''if 'EGamma' in args.nickName and not ( e.HLT_Ele27_WPTight_Gsf or e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
             elif 'SingleMuon' in args.nickName:
                 if (e.HLT_Ele27_WPTight_Gsf or e.HLT_Ele32_WPTight_Gsf or e.HLT_Ele35_WPTight_Gsf): continue
@@ -452,13 +456,19 @@ for count, e in enumerate( inTree) :
         continue
         '''
         #===================no pairing==============
-        '''if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 2:
+        if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 2:
             bestDCH1 = [] #these are just containers for keeping the code simple, no pairing is done!
             lep1, lep2, lep3, lep4, cat2L = TF.simpleDCHpairing(e, goodElectronList, goodMuonList, goodTauList)
             bestDCH1 = [lep1, lep2]
             if lep1 + lep2 < 0 or cat2L == '': continue
             SVFit = False
-            if not MC : isMC = False
+            if isMC:
+                Trig_fired = False
+                if  cat2L[0] == 'e' and TF.isETriggered(e,lep1,era): Trig_fired = True
+                elif cat2L[0] == 'm' and TF.isMuTriggered(e,lep1,era): Trig_fired = True
+                if cat2L[1] == 'e' and TF.isETriggered(e,lep2,era): Trig_fired = True
+                elif cat2L[1] == 'm' and TF.isMuTriggered(e,lep2,era): Trig_fired = True
+                if not Trig_fired : continue
             outTuple.Fill3L(e,SVFit,cat2L,gen_cat,br_weight, bestDCH1,lep3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
         #continue
         elif len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 3:
@@ -469,7 +479,15 @@ for count, e in enumerate( inTree) :
             if lep1 + lep2 + lep3 < 0 or cat3L == '': continue
             #TF.checkDuplicate(e, cat3L, lep1, lep2, lep3, lep4)
             SVFit = False
-            if not MC : isMC = False
+            if isMC:
+                Trig_fired = False
+                if  cat3L[0] == 'e' and TF.isETriggered(e,lep1,era): Trig_fired = True
+                elif cat3L[0] == 'm' and TF.isMuTriggered(e,lep1,era): Trig_fired = True
+                if cat3L[1] == 'e' and TF.isETriggered(e,lep2,era): Trig_fired = True
+                elif cat3L[1] == 'm' and TF.isMuTriggered(e,lep2,era): Trig_fired = True
+                if cat3L[2] == 'e' and TF.isETriggered(e,lep3,era): Trig_fired = True
+                elif cat3L[2] == 'm' and TF.isMuTriggered(e,lep3,era): Trig_fired = True
+                if not Trig_fired : continue
             outTuple.Fill3L(e,SVFit,cat3L,gen_cat,br_weight, bestDCH1,lep3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
             doGenMatch = False
             if doGenMatch:# GF.printGenDecayModeBkg(e,bkg=args.nickName) == args.category :
@@ -490,10 +508,20 @@ for count, e in enumerate( inTree) :
             bestDCH2 = [lep3, lep4]
             if lep1 + lep2 + lep3 + lep4 < 0 or cat == '': continue
             SVFit = False
-            if not MC : isMC = False
+            if isMC:
+                Trig_fired = False
+                if  cat[0] == 'e' and TF.isETriggered(e,lep1,era): Trig_fired = True
+                elif cat[0] == 'm' and TF.isMuTriggered(e,lep1,era): Trig_fired = True
+                if cat[1] == 'e' and TF.isETriggered(e,lep2,era): Trig_fired = True
+                elif cat[1] == 'm' and TF.isMuTriggered(e,lep2,era): Trig_fired = True
+                if cat[2] == 'e' and TF.isETriggered(e,lep3,era): Trig_fired = True
+                elif cat[2] == 'm' and TF.isMuTriggered(e,lep3,era): Trig_fired = True
+                if cat[3] == 'e' and TF.isETriggered(e,lep4,era): Trig_fired = True
+                elif cat[3] == 'm' and TF.isMuTriggered(e,lep4,era): Trig_fired = True
+                if not Trig_fired : continue
             outTuple.Fill(e,SVFit,cat,gen_cat, br_weight, bestDCH1,bestDCH2,isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
         continue
-        '''    
+            
         #=============3-lep=====================================
         if len(goodElectronList)+len(goodMuonList)+len(goodTauList) == 3:
             evts_3lep += 1
@@ -567,7 +595,6 @@ for count, e in enumerate( inTree) :
                 if lep_3 == -99: continue
 
                 SVFit = False
-                if not MC : isMC = False 
                 outTuple.Fill3L(e,SVFit,cat3L,gen_cat, br_weight, bestDCH1,lep_3, isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
                 #=========================================================    
 
@@ -765,7 +792,6 @@ for count, e in enumerate( inTree) :
 
                 SVFit = False
                 #continue        
-                if not MC : isMC = False
                 if "Hpp" in args.nickName: TruCat[gen_cat] += 1
                 outTuple.Fill(e,SVFit,cat,gen_cat, br_weight, bestDCH1,bestDCH2,isMC,era,doJME, met_pt, met_phi,  isyst, tauMass, tauPt, eleMass, elePt, muMass, muPt, args.era)
                 '''

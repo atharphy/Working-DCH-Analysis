@@ -2,7 +2,7 @@
 
 from ROOT import TLorentzVector, TH1
 from math import sqrt, sin, cos, pi
-import tauFunDCH as tauFunDCH
+import tauFunDCH_test as tauFunDCH
 import ROOT, array
 import os
 import sys
@@ -2524,6 +2524,17 @@ class outTuple() :
         self.m_3[0]    = Lep3.M()
         self.m_4[0]    = Lep4.M()
 
+        isTrig1_fired, isTrig2_fired, isTrig3_fired, isTrig4_fired = False, False, False, False
+        if isMC:
+            if cat[0] == 'e' and tauFunDCH.isETriggered(entry,jl1,era): isTrig1_fired = True
+            elif cat[0] == 'm' and tauFunDCH.isMuTriggered(entry,jl1,era): isTrig1_fired = True
+            if cat[1] == 'e' and tauFunDCH.isETriggered(entry,jl2,era): isTrig2_fired = True
+            elif cat[1] == 'm' and tauFunDCH.isMuTriggered(entry,jl2,era): isTrig2_fired = True
+            if cat[2] == 'e' and tauFunDCH.isETriggered(entry,jl3,era): isTrig3_fired = True
+            elif cat[2] == 'm' and tauFunDCH.isMuTriggered(entry,jl3,era): isTrig3_fired = True
+            if cat[3] == 'e' and tauFunDCH.isETriggered(entry,jl4,era): isTrig4_fired = True
+            elif cat[3] == 'm' and tauFunDCH.isMuTriggered(entry,jl4,era): isTrig4_fired = True
+
         # di-lepton variables.   _p and _m refer to plus and minus charge
         if jl3>-1 and jl4>-1 : self.AMass[0]       = (Lep1 + Lep2 + Lep3 + Lep4).M() 
         self.mll[0]       = (Lep1 + Lep2).M()
@@ -2871,11 +2882,10 @@ class outTuple() :
                         except IndexError : pass
 
         '''
-
-        self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(),  isMC)
-        self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(),  isMC)
-        self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
-        self.IDSF_4[0], self.ISOSF_4[0], self.TrigSF_4[0] = self.getIDISOTrigSF(era, yearin, cat[3], Lep4.Pt(), Lep4.Eta(), Lep4.Phi(),  isMC)
+        self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(), isTrig1_fired, isMC)
+        self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(), isTrig2_fired, isMC)
+        self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(), isTrig3_fired, isMC)
+        self.IDSF_4[0], self.ISOSF_4[0], self.TrigSF_4[0] = self.getIDISOTrigSF(era, yearin, cat[3], Lep4.Pt(), Lep4.Eta(), Lep4.Phi(), isTrig4_fired, isMC)
 
         if isMC:
             if cat[0]=='t': self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0] = self.getTauIDSFs(entry.Tau_pt[jl1],entry.Tau_eta[jl1], entry.Tau_decayMode[jl1], ord(chr(entry.Tau_genPartFlav[jl1])),"VVLoose","Medium","Medium",isMC, "nom")
@@ -3803,6 +3813,14 @@ class outTuple() :
         self.eta_2[0]  = Lep2.Eta()
         self.m_1[0]    = Lep1.M()
         self.m_2[0]    = Lep2.M()
+
+        isTrig1_fired, isTrig2_fired, isTrig3_fired, isTrig4_fired = False, False, False, False
+        if isMC:
+            if cat[0] == 'e' and tauFunDCH.isETriggered(entry,jl1,era): isTrig1_fired = True
+            elif cat[0] == 'm' and tauFunDCH.isMuTriggered(entry,jl1,era): isTrig1_fired = True
+            if cat[1] == 'e' and tauFunDCH.isETriggered(entry,jl2,era): isTrig2_fired = True
+            elif cat[1] == 'm' and tauFunDCH.isMuTriggered(entry,jl2,era): isTrig2_fired = True
+
         if jl3 < 0:
             self.pt_3[0]   = -1
             self.phi_3[0]  = -9
@@ -3813,6 +3831,9 @@ class outTuple() :
             self.phi_3[0]  = Lep3.Phi()
             self.eta_3[0]  = Lep3.Eta()
             self.m_3[0]    = Lep3.M()
+            if isMC:
+                if cat[2] == 'e' and tauFunDCH.isETriggered(entry,jl3,era): isTrig3_fired = True
+                elif cat[2] == 'm' and tauFunDCH.isMuTriggered(entry,jl3,era): isTrig3_fired = True
 
         self.pt_4[0]   = -1
         self.phi_4[0]  = -9
@@ -4166,14 +4187,14 @@ class outTuple() :
 
         '''
 
-        self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(),  isMC)
-        self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(),  isMC)
+        self.IDSF_1[0], self.ISOSF_1[0], self.TrigSF_1[0] = self.getIDISOTrigSF(era, yearin, cat[0], Lep1.Pt(), Lep1.Eta(), Lep1.Phi(), isTrig1_fired, isMC)
+        self.IDSF_2[0], self.ISOSF_2[0], self.TrigSF_2[0] = self.getIDISOTrigSF(era, yearin, cat[1], Lep2.Pt(), Lep2.Eta(), Lep2.Phi(), isTrig2_fired,  isMC)
         if isMC:
             if cat[0]=='t': self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0] = self.getTauIDSFs(entry.Tau_pt[jl1],entry.Tau_eta[jl1], entry.Tau_decayMode[jl1], ord(chr(entry.Tau_genPartFlav[jl1])),"VVLoose","Medium","Medium",isMC, "nom")
             if cat[1]=='t': self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0] = self.getTauIDSFs(entry.Tau_pt[jl2],entry.Tau_eta[jl2], entry.Tau_decayMode[jl2], ord(chr(entry.Tau_genPartFlav[jl2])),"VVLoose","Medium","Medium",isMC, "nom") 
             #print (self.TauVsEleIDSF_1[0], self.TauVsMuIDSF_1[0], self.TauVsJetIDSF_1[0], self.TauES_1[0],self.TauVsEleIDSF_2[0], self.TauVsMuIDSF_2[0], self.TauVsJetIDSF_2[0], self.TauES_2[0])
         if jl3 > -1: 
-            self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(),  isMC)
+            self.IDSF_3[0], self.ISOSF_3[0], self.TrigSF_3[0] = self.getIDISOTrigSF(era, yearin, cat[2], Lep3.Pt(), Lep3.Eta(), Lep3.Phi(), isTrig3_fired, isMC)
             if isMC and cat[2]=='t': self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0] = self.getTauIDSFs(entry.Tau_pt[jl3],entry.Tau_eta[jl3], entry.Tau_decayMode[jl3], ord(chr(entry.Tau_genPartFlav[jl3])),"VVLoose","Medium","Medium",isMC, "nom")
             #print (self.TauVsEleIDSF_3[0], self.TauVsMuIDSF_3[0], self.TauVsJetIDSF_3[0], self.TauES_3[0])
         
@@ -4199,30 +4220,32 @@ class outTuple() :
         #print("outTuple.setWeight() weight={0:f}".format(weight))
         return
 
-    def getIDISOTrigSF(self, era, yearin, lep_flav, lep_pt, lep_eta, lep_phi, isMC):
-    	id_sf=1.
-    	iso_sf=1.
-    	trig_sf=1. 
-    	if not isMC : return id_sf, iso_sf, trig_sf
-    	if lep_flav == 'e':
-            if lep_pt > 20 : id_sf = self.evaluatorEl["UL-Electron-ID-SF"].evaluate(yearin, "sf" , "RecoAbove20", lep_eta, lep_pt )
-            if lep_pt > 20 : iso_sf = self.evaluatorEl["UL-Electron-ID-SF"].evaluate(yearin, "sf" , "wp90noiso", lep_eta, lep_pt )		
-            eff_trig_d =  self.sf_EleTrig.get_EfficiencyData(lep_pt,lep_eta)
-            eff_trig_mc =  self.sf_EleTrig.get_EfficiencyMC(lep_pt,lep_eta)
-            if eff_trig_mc !=0 : trig_sf = float(eff_trig_d/eff_trig_mc)
-    	elif lep_flav == 'm':	
-            if lep_pt> 15 : id_sf = self.evaluatorMu["NUM_TightID_DEN_TrackerMuons"].evaluate("{0:s}_UL".format( str(yearin)), abs(lep_eta), lep_pt, "sf")
-            #as a lazy hack I multiply iso and reco SF together to reduce branches.
-            if lep_pt> 15 : iso_sf = self.evaluatorMu["NUM_TightRelIso_DEN_TightIDandIPCut"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")*self.evaluatorMu["NUM_TrackerMuons_DEN_genTracks"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf") 
-            if era == '2016' : 
-                if lep_pt > 26  : trig_sf = self.evaluatorMu["NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")
-                #NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight  
-            if era =='2017' :  
-                if lep_pt > 29 : trig_sf = self.evaluatorMu["NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")
-            if era =='2018' :  
-                if lep_pt > 26 : trig_sf = self.evaluatorMu["NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")  ### for 2018 the json Veto only 24 SF..but we have used the HLT27
-    	#print (id_sf, iso_sf, trig_sf)
-    	return id_sf, iso_sf, trig_sf
+    def getIDISOTrigSF(self, era, yearin, lep_flav, lep_pt, lep_eta, lep_phi, isTrig_fired, isMC):
+        id_sf=1.
+        iso_sf=1.
+        trig_sf=1. 
+        if not isMC : return id_sf, iso_sf, trig_sf
+        if lep_flav == 'e':
+            if lep_pt > 20 : 
+                id_sf = self.evaluatorEl["UL-Electron-ID-SF"].evaluate(yearin, "sf" , "RecoAbove20", lep_eta, lep_pt )
+                iso_sf = self.evaluatorEl["UL-Electron-ID-SF"].evaluate(yearin, "sf" , "wp90noiso", lep_eta, lep_pt )
+            if isTrig_fired:
+                eff_trig_d =  self.sf_EleTrig.get_EfficiencyData(lep_pt,lep_eta)
+                eff_trig_mc =  self.sf_EleTrig.get_EfficiencyMC(lep_pt,lep_eta)
+                if eff_trig_mc !=0 :  trig_sf = float(eff_trig_d/eff_trig_mc)
+        elif lep_flav == 'm':
+            if lep_pt> 15 : 
+                id_sf = self.evaluatorMu["NUM_TightID_DEN_TrackerMuons"].evaluate("{0:s}_UL".format( str(yearin)), abs(lep_eta), lep_pt, "sf")
+                iso_sf = self.evaluatorMu["NUM_TightRelIso_DEN_TightIDandIPCut"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")*self.evaluatorMu["NUM_TrackerMuons_DEN_genTracks"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")
+            if isTrig_fired:
+                if era == '2016' : 
+                    if lep_pt > 26  : trig_sf = self.evaluatorMu["NUM_IsoMu24_or_IsoTkMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(yearin)), abs(lep_eta), lep_pt, "sf")
+                if era =='2017' :  
+                    if lep_pt > 29 : trig_sf = self.evaluatorMu["NUM_IsoMu27_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")
+                if era =='2018' :  
+                    if lep_pt > 26 : trig_sf = self.evaluatorMu["NUM_IsoMu24_DEN_CutBasedIdTight_and_PFIsoTight"].evaluate("{0:s}_UL".format(str(era)), abs(lep_eta), lep_pt, "sf")  ### for 2018 the json Veto only 24 SF..but we have used the HLT27
+        #print (id_sf, iso_sf, trig_sf)
+        return id_sf, iso_sf, trig_sf
 
     def getTauIDSFs(self, tau_pt, tau_eta, dm, tauGenPartFlav, tauVeleWP, tauVmuWP, tauVjetWP,isMC, variation):
         tauVsEle_sf=1.
