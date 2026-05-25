@@ -31,7 +31,7 @@ class SFs():
         for iBin in range (0, nEtaBins) : 
             etaLabel = EtaBins[iBin]
             GraphName = HistoBaseName+etaLabel+"_Data"
-       	    print(GraphName,etaLabel)
+       	    #print(GraphName,etaLabel)
        
        	    self.eff_dataH[etaLabel]=self.fileIn.Get(str(GraphName))
             self.SetAxisBins(self.eff_dataH[etaLabel])

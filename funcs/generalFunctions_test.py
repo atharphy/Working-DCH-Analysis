@@ -877,7 +877,7 @@ def findSingleLeptTrigger(goodLeptonList,entry,flavour,era, printOn=False):
     return LepttrigList, hltList, hltListSubL
 
 
-def findSingleLeptTriggerDCH(goodLeptonList,entry,dch,era, printOn=True):
+def findSingleLeptTriggerDCH(goodLeptonList,entry,dch,era, printOn=False):
     LepttrigList =[]
     hltList1 = []
     hltList2 = []

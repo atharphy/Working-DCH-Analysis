@@ -1,0 +1,6 @@
+root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18NanoAODv9/ttHJetToEE_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/40000/60FAE295-65E3-7F44-B709-EAEB6B688785.root
+root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18NanoAODv9/ttHJetToEE_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/2510000/23FBCAB1-F88A-4F4D-9474-56DF81D16715.root
+root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18NanoAODv9/ttHJetToEE_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/230000/4BEAA4B9-5AAB-4447-ADE7-F4CDE3B7ADB8.root
+root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18NanoAODv9/ttHJetToEE_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/2430000/2AE1AAE6-7500-2F49-BEC0-39B454DB72CA.root
+root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18NanoAODv9/ttHJetToEE_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/250000/466C4E59-0A8C-5843-B361-310A89ECF62B.root
+root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18NanoAODv9/ttHJetToEE_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/100000/BFD2C1AD-389D-1743-8A60-F7E28C6011AF.root

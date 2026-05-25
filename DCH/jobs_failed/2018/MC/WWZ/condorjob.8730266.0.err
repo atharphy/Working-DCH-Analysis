@@ -1,0 +1,6 @@
+usage: DCH_test.py [-h] [-v VERBOSE] [-f INFILENAME] [-c CATEGORY]
+                   [--nickName NICKNAME] [-d DATATYPE] [-o OUTFILENAME]
+                   [-n NEVENTS] [-m MAXPRINT] [-t TESTMODE] [-y YEAR]
+                   [-s SELECTION] [-u UNIQUE] [-w WEIGHTS] [-j DOSYSTEMATICS]
+                   [-e ERA] [--cuts {tight,loose}]
+DCH_test.py: error: unrecognized arguments: error: unmatched dataset pattern error: unmatched dataset pattern

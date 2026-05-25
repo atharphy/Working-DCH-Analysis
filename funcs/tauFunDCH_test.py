@@ -251,6 +251,57 @@ def makeGoodTauList(entry, cutflow, printOn=False) :
         tauList.append(j)
     return tauList
 
+def makeLooseTauList(entry, cutflow, printOn=False) :
+    """ tauFun.makeGoodTauList(): return a list of taus that 
+                             pass the basic selection cuts               
+    """
+
+    if entry.nTau == 0: return []
+
+    tauList = []
+    tt = selections['loose_textra'] # selections for H->tau(h)+tau(h)
+
+    #for j in range(entry.nTau):   
+    '''
+    for reco tauh matched to electrons at gen level in the format (dm0, dm1): for 2016 (-0.5%, +6.0%), for 2017 (+0.3%, +3.6%), for 2018 (-3.2%, +2.6%)
+    for reco tauh matched to muons at gen level in the format (dm0, dm1): for 2016 (+0.0%, -0.5%), for 2017 (+0.0%, +0.0%), for 2018 (-0.2%, -1.0%)
+    '''
+    for j in range(entry.nTau):    
+        # apply tau(h) selections 
+        cutflow.count('cut0')
+        if entry.Tau_pt[j] < tt['tau_pt']:
+            cutflow.count('cut1')
+            continue
+        if abs(entry.Tau_eta[j]) > tt['tau_eta']:
+            cutflow.count('cut2')
+            continue
+        if abs(entry.Tau_dz[j]) > tt['tau_dz']:
+            cutflow.count('cut3')
+            continue
+        #if not entry.Tau_idDecayModeNewDMs[j]: continue
+        if  entry.Tau_decayMode[j] == 5 or entry.Tau_decayMode[j] == 6 :
+            cutflow.count('cut4')
+            continue
+        if abs(entry.Tau_charge[j]) != 1:
+            cutflow.count('cut5')
+            continue
+
+        if tt['tau_vJet'] > 0  and not ord(chr(entry.Tau_idDeepTau2017v2p1VSjet[j])) & tt['tau_vJet'] > 0 :
+            cutflow.count('cut6')
+            if printOn : print("        fail DeepTau vs. Jet={0:d}".format(ord(chr(entry.Tau_idDeepTau2017v2p1VSjet[j]))))
+            continue
+        if tt['tau_vEle'] > 0 and not ord(chr(entry.Tau_idDeepTau2017v2p1VSe[j])) & tt['tau_vEle'] > 0 :
+            cutflow.count('cut7')
+            if printOn : print("        fail DeepTau vs. ele={0:d}".format(ord(chr(entry.Tau_idDeepTau2017v2p1VSe[j]))))
+            continue
+        if tt['tau_vMu'] > 0 and not ord(chr(entry.Tau_idDeepTau2017v2p1VSmu[j])) & tt['tau_vMu'] > 0 :
+            cutflow.count('cut8')
+            if printOn : print("        fail DeepTau vs.  mu={0:d}".format(ord(chr(entry.Tau_idDeepTau2017v2p1VSmu[j]))))
+            continue
+        tauList.append(j)
+    return tauList
+
+
 def makeGoodTauListWjets(channel, entry, muIndex,  printOn=False) :
     """ tauFun.getTauList(): return a list of taus that 
                              pass the basic selection cuts               
@@ -1526,6 +1577,50 @@ def makeGoodElectronListDCH(entry,cutflow) :
         if goodElectronDCH(entry, i,cutflow) : goodElectronList.append(i)
     return goodElectronList
 
+#Double Charged Higgs cuts
+def looseElectronDCH(entry, j,cutflow) :
+    """ tauFun.goodElectron(): select good electrons 
+                               for Z -> ele + ele
+    """
+    ee = selections['loose_eextra'] # selections for Z->ee
+    cutflow.count('cut0')
+
+    if entry.Electron_pt[j] < ee['ele_pt']: 
+        cutflow.count('cut1')
+        return False
+    if abs(entry.Electron_eta[j]) > ee['ele_eta']:
+        cutflow.count('cut2')
+        return False
+    if abs(entry.Electron_dxy[j]) > ee['ele_dxy']:
+        cutflow.count('cut3')
+        return False
+    if abs(entry.Electron_dz[j]) > ee['ele_dz']:
+        cutflow.count('cut4')
+        return False
+
+    if ord(chr(entry.Electron_lostHits[j])) > ee['ele_lostHits']: return False
+    if ee['ele_iso_f'] and entry.Electron_pfRelIso03_all[j] >  ee['ele_iso']:
+        cutflow.count('cut5')
+        return False
+    if ee['ele_convVeto']:
+        if not entry.Electron_convVeto[j]:
+            cutflow.count('cut6')
+            return False
+    if ee['ele_ID']:
+        #if not entry.Electron_cutBased_HEEP[j] : return False
+        if not entry.Electron_mvaFall17V2noIso_WPL[j] :
+            cutflow.count('cut7')
+            return False
+        #if entry.Electron_cutBased[j] < 2 : return False
+    return True 
+
+def makeLooseElectronListDCH(entry,cutflow) :
+    looseElectronList = []
+    for i in range(entry.nElectron) :
+        if looseElectronDCH(entry, i,cutflow) : looseElectronList.append(i)
+    return looseElectronList
+
+
 def goodMuonDCH(entry, j ,cutflow):
     """ tauFun.goodMuon(): select good muons
                            for Z -> mu + mu
@@ -1567,6 +1662,49 @@ def makeGoodMuonListDCH(entry,cutflow) :
         if goodMuonDCH(entry, i,cutflow) : goodMuonList.append(i)
     #print("In tauFun.makeGoodMuonList = {0:s}".format(str(goodMuonList)))
     return goodMuonList
+
+
+def looseMuonDCH(entry, j ,cutflow):
+    """ tauFun.goodMuon(): select good muons
+                           for Z -> mu + mu
+    """
+    
+    mm = selections['loose_mextra'] # selections for Z->mumu
+    cutflow.count('cut0')
+
+    if entry.Muon_pt[j] < mm['mu_pt']:
+        cutflow.count('cut1')
+        return False
+    if abs(entry.Muon_eta[j]) > mm['mu_eta']:
+        cutflow.count('cut2')
+        return False
+    if mm['mu_iso_f'] and entry.Muon_pfRelIso04_all[j] >  mm['mu_iso']:
+        cutflow.count('cut3')
+        return False
+    #if mm['mu_iso_f'] and entry.Muon_tkRelIso[j] >  mm['mu_iso']: return False
+    #if mm['mu_ID'] and not entry.Muon_looseId[j] : return False
+    if abs(entry.Muon_dxy[j]) > mm['mu_dxy']:
+        cutflow.count('cut4')
+        return False
+    if abs(entry.Muon_dz[j]) > mm['mu_dz']:
+        cutflow.count('cut5')
+        return False
+    if mm['mu_type'] :
+        if not (entry.Muon_isGlobal[j] or entry.Muon_isTracker[j]) :
+            cutflow.count('cut6')
+            return False
+    if mm['mu_ID'] :
+        if not entry.Muon_looseId[j] :
+            cutflow.count('cut7')
+            return False 
+    return True 
+
+def makeLooseMuonListDCH(entry,cutflow) :
+    looseMuonList = []
+    for i in range(entry.nMuon) :
+        if looseMuonDCH(entry, i,cutflow) : looseMuonList.append(i)
+    #print("In tauFun.makeGoodMuonList = {0:s}".format(str(goodMuonList)))
+    return looseMuonList
 
 #Double Charged Higgs cuts
 

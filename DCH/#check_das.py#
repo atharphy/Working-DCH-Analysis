@@ -1,0 +1,9 @@
+get_files(dataset)
+
+        if files is None:
+                        print(f"{nickname:< DAS query failed")
+                                elif len(files) == 0:
+                                                print(f"{nickname:<  0 files (dataset exists but empty?)")
+                                else:
+                                                print(f"{nickname:<35} : 
+                                                                    35} : 35} : 

@@ -1,0 +1,8 @@
+Error in <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3011] No servers are available to read the file.
+
+Traceback (most recent call last):
+  File "/afs/cern.ch/user/a/atahmad/guru_framework/CMSSW_13_0_10/src/DCH-framework/DCH/DCH_test.py", line 102, in <module>
+    inFile = TFile.Open(inFileName)
+  File "/cvmfs/cms.cern.ch/el9_amd64_gcc11/lcg/root/6.26.11-a931eb5f206ceca777958cf9f4442b77/lib/ROOT/_pythonization/_tfile.py", line 67, in _TFileOpen
+    raise OSError('Failed to open file {}'.format(str(args[0])))
+OSError: Failed to open file root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL17NanoAODv9/WJetsToLNu_0J_TuneCP5_13TeV-amcatnloFXFX-pythia8/NANOAODSIM/106X_mc2017_realistic_v9-v1/130000/386F2AD3-BC29-1D49-B49F-A4FF7C6A8CC7.root

@@ -245,10 +245,35 @@ class outTuple() :
         self.EleID_2 = array('d',[0])
         self.EleID_3 = array('d',[0])
         self.EleID_4 = array('d',[0])
+
+        self.EleID_WP90_1 = array('d',[0])
+        self.EleID_WP90_2 = array('d',[0])
+        self.EleID_WP90_3 = array('d',[0])
+        self.EleID_WP90_4 = array('d',[0])
+
+        self.EleID_WPL_1 = array('d',[0])
+        self.EleID_WPL_2 = array('d',[0])
+        self.EleID_WPL_3 = array('d',[0])
+        self.EleID_WPL_4 = array('d',[0])
+
         self.MuID_1 = array('l',[0])
         self.MuID_2 = array('l',[0])
         self.MuID_3 = array('l',[0])
         self.MuID_4 = array('l',[0])
+
+        self.TauIDe_1 = array('l',[0])
+        self.TauIDe_2 = array('l',[0])
+        self.TauIDe_3 = array('l',[0])
+        self.TauIDe_4 = array('l',[0])
+        self.TauIDm_1 = array('l',[0])
+        self.TauIDm_2 = array('l',[0])
+        self.TauIDm_3 = array('l',[0])
+        self.TauIDm_4 = array('l',[0])
+        self.TauIDj_1 = array('l',[0])
+        self.TauIDj_2 = array('l',[0])
+        self.TauIDj_3 = array('l',[0])
+        self.TauIDj_4 = array('l',[0])
+
         self.TauVsEleIDSF_1 = array('d',[0])
         self.TauVsEleIDSF_2 = array('d',[0])
         self.TauVsEleIDSF_3 = array('d',[0])
@@ -261,6 +286,7 @@ class outTuple() :
         self.TauVsJetIDSF_2 = array('d',[0])
         self.TauVsJetIDSF_3 = array('d',[0])
         self.TauVsJetIDSF_4 = array('d',[0])
+
         self.TauES_1 = array('d',[0])
         self.TauES_2 = array('d',[0])
         self.TauES_3 = array('d',[0])
@@ -594,10 +620,34 @@ class outTuple() :
         self.t.Branch('EleID_2',           self.EleID_2,            'EleID_2/D' )
         self.t.Branch('EleID_3',           self.EleID_3,            'EleID_3/D' )
         self.t.Branch('EleID_4',           self.EleID_4,            'EleID_4/D' )
+        self.t.Branch('EleID_WP90_1',           self.EleID_WP90_1,            'EleID_WP90_1/D' )
+        self.t.Branch('EleID_WP90_2',           self.EleID_WP90_2,            'EleID_WP90_2/D' )
+        self.t.Branch('EleID_WP90_3',           self.EleID_WP90_3,            'EleID_WP90_3/D' )
+        self.t.Branch('EleID_WP90_4',           self.EleID_WP90_4,            'EleID_WP90_4/D' )
+
+        self.t.Branch('EleID_WPL_1',           self.EleID_WPL_1,            'EleID_WPL_1/D' )
+        self.t.Branch('EleID_WPL_2',           self.EleID_WPL_2,            'EleID_WPL_2/D' )
+        self.t.Branch('EleID_WPL_3',           self.EleID_WPL_3,            'EleID_WPL_3/D' )
+        self.t.Branch('EleID_WPL_4',           self.EleID_WPL_4,            'EleID_WPL_4/D' )
+
         self.t.Branch('MuID_1',           self.MuID_1,            'MuID_1/I' )
         self.t.Branch('MuID_2',           self.MuID_2,            'MuID_2/I' )
         self.t.Branch('MuID_3',           self.MuID_3,            'MuID_3/I' )
         self.t.Branch('MuID_4',           self.MuID_4,            'MuID_4/I' )
+
+        self.t.Branch('TauIDe_1',           self.TauIDe_1,            'TauIDe_1/I' )
+        self.t.Branch('TauIDe_2',           self.TauIDe_2,            'TauIDe_2/I' )
+        self.t.Branch('TauIDe_3',           self.TauIDe_3,            'TauIDe_3/I' )
+        self.t.Branch('TauIDe_4',           self.TauIDe_4,            'TauIDe_4/I' )
+        self.t.Branch('TauIDm_1',           self.TauIDm_1,            'TauIDm_1/I' )
+        self.t.Branch('TauIDm_2',           self.TauIDm_2,            'TauIDm_2/I' )
+        self.t.Branch('TauIDm_3',           self.TauIDm_3,            'TauIDm_3/I' )
+        self.t.Branch('TauIDm_4',           self.TauIDm_4,            'TauIDm_4/I' )
+        self.t.Branch('TauIDj_1',           self.TauIDj_1,            'TauIDj_1/I' )
+        self.t.Branch('TauIDj_2',           self.TauIDj_2,            'TauIDj_2/I' )
+        self.t.Branch('TauIDj_3',           self.TauIDj_3,            'TauIDj_3/I' )
+        self.t.Branch('TauIDj_4',           self.TauIDj_4,            'TauIDj_4/I' )
+
         self.t.Branch('TauVsEleIDSF_1',  self.TauVsEleIDSF_1,  'TauVsEleIDSF_1/D' )
         self.t.Branch('TauVsEleIDSF_2',  self.TauVsEleIDSF_2,  'TauVsEleIDSF_2/D' )
         self.t.Branch('TauVsEleIDSF_3',  self.TauVsEleIDSF_3,  'TauVsEleIDSF_3/D' )
@@ -1042,9 +1092,9 @@ class outTuple() :
             bjet_discrM = 0.4941
             bjet_discrT = 0.8001
         if str(era) == '2018' : 
-            bjet_discrL = 0.1241
-            bjet_discrM = 0.4184
-            bjet_discrT = 0.7527
+            bjet_discrL = 0.1208
+            bjet_discrM = 0.4168
+            bjet_discrT = 0.7665
 
         failJets=[]
         goodJets=[]
@@ -1127,10 +1177,10 @@ class outTuple() :
             bjet_discrL = 0.1522
             bjet_discrM = 0.4941
             bjet_discrT = 0.8001
-        if str(era) == '2018' :
-            bjet_discrL = 0.1241
-            bjet_discrM = 0.4184
-            bjet_discrT = 0.7527
+        if str(era) == '2018' : 
+            bjet_discrL = 0.1208
+            bjet_discrM = 0.4168
+            bjet_discrT = 0.7665
 
         failJets=[]
         goodJets=[]
@@ -1404,8 +1454,8 @@ class outTuple() :
             hltListLep_2  = []
             hltListLepSubL_2  = []
 
-            TrigListLep_1, hltListLep_1, hltListLepSubL_1  = GF.findSingleLeptTriggerDCH(idx_DCH1, entry, dch_1, era)
-            TrigListLep_2, hltListLep_2, hltListLepSubL_2  = GF.findSingleLeptTriggerDCH(idx_DCH2, entry, dch_2, era)
+            TrigListLep_1, hltListLep_1, hltListLepSubL_1  = GF.findSingleLeptTriggerDCH(idx_DCH1, entry, dch_1, era,printOn=False)
+            TrigListLep_2, hltListLep_2, hltListLepSubL_2  = GF.findSingleLeptTriggerDCH(idx_DCH2, entry, dch_2, era,printOn=False)
      
             TrigListLep_1 = list(dict.fromkeys(TrigListLep_1))
             TrigListLep_2 = list(dict.fromkeys(TrigListLep_2))
@@ -1556,10 +1606,34 @@ class outTuple() :
             self.EleID_2[0] = -99
             self.EleID_3[0] = -99
             self.EleID_4[0] = -99
+            self.EleID_WP90_1[0] = -99
+            self.EleID_WP90_2[0] = -99
+            self.EleID_WP90_3[0] = -99
+            self.EleID_WP90_4[0] = -99
+
+            self.EleID_WPL_1[0] = -99
+            self.EleID_WPL_2[0] = -99
+            self.EleID_WPL_3[0] = -99
+            self.EleID_WPL_4[0] = -99
+
             self.MuID_1[0] = -99
             self.MuID_2[0] = -99
             self.MuID_3[0] = -99
             self.MuID_4[0] = -99
+
+            self.TauIDe_1[0] = -99
+            self.TauIDe_2[0] = -99
+            self.TauIDe_3[0] = -99
+            self.TauIDe_4[0] = -99
+            self.TauIDm_1[0] = -99
+            self.TauIDm_2[0] = -99
+            self.TauIDm_3[0] = -99
+            self.TauIDm_4[0] = -99
+            self.TauIDm_1[0] = -99
+            self.TauIDj_2[0] = -99
+            self.TauIDj_3[0] = -99
+            self.TauIDj_4[0] = -99
+
             self.TauVsEleIDSF_1[0] = 1
             self.TauVsEleIDSF_2[0] = 1
             self.TauVsEleIDSF_3[0] = 1
@@ -1706,6 +1780,14 @@ class outTuple() :
         if dch_1 == 'ee' :
             self.iso_1[0]  = entry.Electron_pfRelIso03_all[jl1]
             self.iso_2[0]  = entry.Electron_pfRelIso03_all[jl2]
+
+            self.EleID_1[0] = entry.Electron_mvaFall17V2noIso[jl1]
+            self.EleID_2[0] = entry.Electron_mvaFall17V2noIso[jl2]
+            self.EleID_WP90_1[0] = entry.Electron_mvaFall17V2noIso_WP90[jl1]
+            self.EleID_WP90_2[0] = entry.Electron_mvaFall17V2noIso_WP90[jl2]
+            self.EleID_WPL_1[0] = entry.Electron_mvaFall17V2noIso_WPL[jl1]
+            self.EleID_WPL_2[0] = entry.Electron_mvaFall17V2noIso_WPL[jl2]
+
             self.q_1[0]  = entry.Electron_charge[jl1]
             self.q_2[0]  = entry.Electron_charge[jl2]
             self.d0_1[0]   = entry.Electron_dxy[jl1]
@@ -1758,6 +1840,15 @@ class outTuple() :
         elif dch_1 == 'em' :
             self.iso_1[0]  = entry.Electron_pfRelIso03_all[jl1]
             self.iso_2[0]  = entry.Muon_pfRelIso03_all[jl2]
+
+            self.EleID_1[0] = entry.Electron_mvaFall17V2noIso[jl1]
+            self.EleID_WP90_1[0] = entry.Electron_mvaFall17V2noIso_WP90[jl1]
+            self.EleID_WPL_1[0] = entry.Electron_mvaFall17V2noIso_WPL[jl1]
+
+            if entry.Muon_looseId[jl2]: self.MuID_2[0] = 1
+            if entry.Muon_mediumId[jl2]: self.MuID_2[0] = 2
+            if entry.Muon_tightId[jl2]: self.MuID_2[0] = 3
+
             self.q_1[0]  = entry.Electron_charge[jl1]
             self.q_2[0]  = entry.Muon_charge[jl2]
             self.d0_1[0]   = entry.Electron_dxy[jl1]
@@ -1820,12 +1911,22 @@ class outTuple() :
         # Fill variables for Leg3, where 3->tau(ele) and 4->tau(had)
         elif dch_1 == 'et' :
             self.iso_1[0]  = entry.Electron_pfRelIso03_all[jl1]
+
+            self.EleID_1[0] = entry.Electron_mvaFall17V2noIso[jl1]
+            self.EleID_WP90_1[0] = entry.Electron_mvaFall17V2noIso_WP90[jl1]
+            self.EleID_WPL_1[0] = entry.Electron_mvaFall17V2noIso_WPL[jl1]
+
             self.q_1[0]  = entry.Electron_charge[jl1]
             self.q_2[0]  = entry.Tau_charge[jl2]
             self.d0_1[0]   = entry.Electron_dxy[jl1]
             self.dZ_1[0]   = entry.Electron_dz[jl1]
             self.d0_2[0]   = entry.Tau_dxy[jl2]
             self.dZ_2[0]   = entry.Tau_dz[jl2]
+
+            self.TauIDe_2[0] = entry.Tau_idDeepTau2017v2p1VSe[jl2]
+            self.TauIDm_2[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl2]
+            self.TauIDj_2[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl2]
+
             #self.Electron_mvaFall17V2noIso_WP90_1[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl1]    
 
             if SystIndex ==0 and  isMC: 
@@ -1867,6 +1968,15 @@ class outTuple() :
             self.dZ_1[0]   = entry.Muon_dz[jl1]
             self.d0_2[0]   = entry.Muon_dxy[jl2]
             self.dZ_2[0]   = entry.Muon_dz[jl2]
+
+            if entry.Muon_looseId[jl1]: self.MuID_1[0] = 1
+            if entry.Muon_mediumId[jl1]: self.MuID_1[0] = 2
+            if entry.Muon_tightId[jl1]: self.MuID_1[0] = 3
+            if entry.Muon_looseId[jl2]: self.MuID_2[0] = 1
+            if entry.Muon_mediumId[jl2]: self.MuID_2[0] = 2
+            if entry.Muon_tightId[jl2]: self.MuID_2[0] = 3
+
+
             '''self.looseId_1[0]   = entry.Muon_looseId[jl1] 
             self.looseId_2[0]   = entry.Muon_looseId[jl2] 
             self.tightId_1[0]        = entry.Muon_tightId[jl1]
@@ -1932,6 +2042,15 @@ class outTuple() :
             self.dZ_1[0]   = entry.Muon_dz[jl1]
             self.d0_2[0]   = entry.Tau_dxy[jl2]
             self.dZ_2[0]   = entry.Tau_dz[jl2]
+
+            if entry.Muon_looseId[jl1]: self.MuID_1[0] = 1
+            if entry.Muon_mediumId[jl1]: self.MuID_1[0] = 2
+            if entry.Muon_tightId[jl1]: self.MuID_1[0] = 3
+
+            self.TauIDe_2[0] = entry.Tau_idDeepTau2017v2p1VSe[jl2]
+            self.TauIDm_2[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl2]
+            self.TauIDj_2[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl2]
+            
             '''self.tightId_1[0]      = entry.Muon_tightId[jl1]
             self.mediumId_1[0]       = entry.Muon_mediumId[jl1]
             self.mediumPromptId_1[0]   = entry.Muon_mediumPromptId[jl1]
@@ -1984,6 +2103,14 @@ class outTuple() :
             self.idMVAnewDM2017v2_1[0] = ord(chr(entry.Tau_idMVAnewDM2017v2[jl1]))
             self.rawMVAnewDM2017v2_1[0] = entry.Tau_rawMVAnewDM2017v2[jl1]
             '''
+
+            self.TauIDe_1[0] = entry.Tau_idDeepTau2017v2p1VSe[jl1]
+            self.TauIDe_2[0] = entry.Tau_idDeepTau2017v2p1VSe[jl2]
+            self.TauIDm_1[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl1]
+            self.TauIDm_2[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl2]
+            self.TauIDj_1[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl1]
+            self.TauIDj_2[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl2]
+
             if SystIndex ==0 and isMC: 
                     self.pt_uncor_1[0] = tPt[jl1]
                     self.m_uncor_1[0] = tMass[jl1]
@@ -2133,6 +2260,14 @@ class outTuple() :
                 self.dZ_3[0]   = entry.Electron_dz[jl3]
                 self.d0_4[0]   = entry.Electron_dxy[jl4]
                 self.dZ_4[0]   = entry.Electron_dz[jl4]
+
+                self.EleID_3[0] = entry.Electron_mvaFall17V2noIso[jl3]
+                self.EleID_4[0] = entry.Electron_mvaFall17V2noIso[jl4]
+                self.EleID_WP90_3[0] = entry.Electron_mvaFall17V2noIso_WP90[jl3]
+                self.EleID_WP90_4[0] = entry.Electron_mvaFall17V2noIso_WP90[jl4]
+                self.EleID_WPL_3[0] = entry.Electron_mvaFall17V2noIso_WPL[jl3]
+                self.EleID_WPL_4[0] = entry.Electron_mvaFall17V2noIso_WPL[jl4]
+
                 #self.Electron_mvaFall17V2noIso_WP90_3[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl3]
                 #self.Electron_mvaFall17V2noIso_WP90_4[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl4]                         
                 if SystIndex ==0 and  isMC:
@@ -2185,6 +2320,15 @@ class outTuple() :
                 self.dZ_3[0]   = entry.Electron_dz[jl3]
                 self.d0_4[0]   = entry.Muon_dxy[jl4]
                 self.dZ_4[0]   = entry.Muon_dz[jl4]
+
+                self.EleID_3[0] = entry.Electron_mvaFall17V2noIso[jl3]
+                self.EleID_WP90_3[0] = entry.Electron_mvaFall17V2noIso_WP90[jl3]
+                self.EleID_WPL_3[0] = entry.Electron_mvaFall17V2noIso_WPL[jl3]
+
+                if entry.Muon_looseId[jl4]: self.MuID_4[0] = 1
+                if entry.Muon_mediumId[jl4]: self.MuID_4[0] = 2
+                if entry.Muon_tightId[jl4]: self.MuID_4[0] = 3
+
                 #self.Electron_mvaFall17V2noIso_WP90_3[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl3]
                 ''' 
                 self.looseId_4[0]   = entry.Muon_looseId[jl4] 
@@ -2247,6 +2391,15 @@ class outTuple() :
                 self.dZ_3[0]   = entry.Electron_dz[jl3]
                 self.d0_4[0]   = entry.Tau_dxy[jl4]
                 self.dZ_4[0]   = entry.Tau_dz[jl4]
+
+                self.EleID_3[0] = entry.Electron_mvaFall17V2noIso[jl3]
+                self.EleID_WP90_3[0] = entry.Electron_mvaFall17V2noIso_WP90[jl3]
+                self.EleID_WPL_3[0] = entry.Electron_mvaFall17V2noIso_WPL[jl3]
+
+                self.TauIDe_4[0] = entry.Tau_idDeepTau2017v2p1VSe[jl4]
+                self.TauIDm_4[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl4]
+                self.TauIDj_4[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl4]
+
                 #self.Electron_mvaFall17V2noIso_WP90_3[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl3]    
 
                 if SystIndex ==0 and  isMC: 
@@ -2288,6 +2441,14 @@ class outTuple() :
                 self.dZ_3[0]   = entry.Muon_dz[jl3]
                 self.d0_4[0]   = entry.Muon_dxy[jl4]
                 self.dZ_4[0]   = entry.Muon_dz[jl4]
+
+                if entry.Muon_looseId[jl3]: self.MuID_3[0] = 1
+                if entry.Muon_mediumId[jl3]: self.MuID_3[0] = 2
+                if entry.Muon_tightId[jl3]: self.MuID_3[0] = 3
+                if entry.Muon_looseId[jl4]: self.MuID_4[0] = 1
+                if entry.Muon_mediumId[jl4]: self.MuID_4[0] = 2
+                if entry.Muon_tightId[jl4]: self.MuID_4[0] = 3
+
                 '''self.looseId_3[0]   = entry.Muon_looseId[jl3] 
                 self.looseId_4[0]   = entry.Muon_looseId[jl4] 
                 self.tightId_3[0]        = entry.Muon_tightId[jl3]
@@ -2353,6 +2514,15 @@ class outTuple() :
                 self.dZ_3[0]   = entry.Muon_dz[jl3]
                 self.d0_4[0]   = entry.Tau_dxy[jl4]
                 self.dZ_4[0]   = entry.Tau_dz[jl4]
+
+                if entry.Muon_looseId[jl3]: self.MuID_3[0] = 1
+                if entry.Muon_mediumId[jl3]: self.MuID_3[0] = 2
+                if entry.Muon_tightId[jl3]: self.MuID_3[0] = 3
+
+                self.TauIDe_4[0] = entry.Tau_idDeepTau2017v2p1VSe[jl4]
+                self.TauIDm_4[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl4]
+                self.TauIDj_4[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl4]
+
                 '''self.tightId_3[0]      = entry.Muon_tightId[jl3]
                 self.mediumId_3[0]       = entry.Muon_mediumId[jl3]
                 self.mediumPromptId_3[0]   = entry.Muon_mediumPromptId[jl3]
@@ -2405,6 +2575,14 @@ class outTuple() :
                 self.idMVAnewDM2017v2_3[0] = ord(chr(entry.Tau_idMVAnewDM2017v2[jl3]))
                 self.rawMVAnewDM2017v2_3[0] = entry.Tau_rawMVAnewDM2017v2[jl3]
                 '''
+
+                self.TauIDe_3[0] = entry.Tau_idDeepTau2017v2p1VSe[jl3]
+                self.TauIDm_3[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl3]
+                self.TauIDj_3[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl3]
+                self.TauIDe_4[0] = entry.Tau_idDeepTau2017v2p1VSe[jl4]
+                self.TauIDm_4[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl4]
+                self.TauIDj_4[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl4]
+
                 if SystIndex ==0 and isMC: 
                     self.pt_uncor_3[0] = tPt[jl3]
                     self.m_uncor_3[0] = tMass[jl3]
@@ -2803,7 +2981,12 @@ class outTuple() :
         self.nbtagL[0] = len(bJetListL)
         self.nbtagM[0] = len(bJetListM)
         self.nbtagT[0] = len(bJetListT)
-        for ifl in range(len(jetListPt)) :
+        # for ifl in range(len(jetListPt)) :
+        #     self.jflavour[ifl]  = jetListFlav[ifl]
+        #     self.jeta[ifl]  = jetListEta[ifl]
+        #     self.jpt[ifl]  = jetListPt[ifl]
+        #     self.btagDeep[ifl] = bTagListDeep[ifl]
+        for ifl in range(min(len(jetListPt), len(self.jflavour))):
             self.jflavour[ifl]  = jetListFlav[ifl]
             self.jeta[ifl]  = jetListEta[ifl]
             self.jpt[ifl]  = jetListPt[ifl]
@@ -2979,9 +3162,9 @@ class outTuple() :
             hltListLep_2  = []
             hltListLepSubL_2  = []
 
-            TrigListLep_1, hltListLep_1, hltListLepSubL_1  = GF.findSingleLeptTriggerDCH(idx_DCH1, entry, dch_1, era)
+            TrigListLep_1, hltListLep_1, hltListLepSubL_1  = GF.findSingleLeptTriggerDCH(idx_DCH1, entry, dch_1, era,printOn=False)
             idx_DCH2 = [jl3]
-            TrigListLep_2, hltListLep_2, hltListLepSubL_2  = GF.findSingleLeptTriggerDCH(idx_DCH2, entry, dch_2, era)
+            TrigListLep_2, hltListLep_2, hltListLepSubL_2  = GF.findSingleLeptTriggerDCH(idx_DCH2, entry, dch_2, era,printOn=False)
 
             TrigListLep_1 = list(dict.fromkeys(TrigListLep_1))
             TrigListLep_2 = list(dict.fromkeys(TrigListLep_2))
@@ -3132,10 +3315,35 @@ class outTuple() :
             self.EleID_2[0] = -99
             self.EleID_3[0] = -99
             self.EleID_4[0] = -99
+
+            self.EleID_WP90_1[0] = -99
+            self.EleID_WP90_2[0] = -99
+            self.EleID_WP90_3[0] = -99
+            self.EleID_WP90_4[0] = -99
+
+            self.EleID_WPL_1[0] = -99
+            self.EleID_WPL_2[0] = -99
+            self.EleID_WPL_3[0] = -99
+            self.EleID_WPL_4[0] = -99
+
             self.MuID_1[0] = -99
             self.MuID_2[0] = -99
             self.MuID_3[0] = -99
             self.MuID_4[0] = -99
+
+            self.TauIDe_1[0] = -99
+            self.TauIDe_2[0] = -99
+            self.TauIDe_3[0] = -99
+            self.TauIDe_4[0] = -99
+            self.TauIDm_1[0] = -99
+            self.TauIDm_2[0] = -99
+            self.TauIDm_3[0] = -99
+            self.TauIDm_4[0] = -99
+            self.TauIDm_1[0] = -99
+            self.TauIDj_2[0] = -99
+            self.TauIDj_3[0] = -99
+            self.TauIDj_4[0] = -99
+
             self.TauVsEleIDSF_1[0] = 1
             self.TauVsEleIDSF_2[0] = 1
             self.TauVsEleIDSF_3[0] = 1
@@ -3287,6 +3495,14 @@ class outTuple() :
             self.dZ_1[0]   = entry.Electron_dz[jl1]
             self.d0_2[0]   = entry.Electron_dxy[jl2]
             self.dZ_2[0]   = entry.Electron_dz[jl2]
+
+            self.EleID_1[0] = entry.Electron_mvaFall17V2noIso[jl1]
+            self.EleID_2[0] = entry.Electron_mvaFall17V2noIso[jl2]
+            self.EleID_WP90_1[0] = entry.Electron_mvaFall17V2noIso_WP90[jl1]
+            self.EleID_WP90_2[0] = entry.Electron_mvaFall17V2noIso_WP90[jl2]
+            self.EleID_WPL_1[0] = entry.Electron_mvaFall17V2noIso_WPL[jl1]
+            self.EleID_WPL_2[0] = entry.Electron_mvaFall17V2noIso_WPL[jl2]
+
             #self.Electron_mvaFall17V2noIso_WP90_1[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl1]
             #self.Electron_mvaFall17V2noIso_WP90_2[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl2]                     
             if SystIndex ==0 and  isMC:
@@ -3339,6 +3555,15 @@ class outTuple() :
             self.dZ_1[0]   = entry.Electron_dz[jl1]
             self.d0_2[0]   = entry.Muon_dxy[jl2]
             self.dZ_2[0]   = entry.Muon_dz[jl2]
+
+            self.EleID_1[0] = entry.Electron_mvaFall17V2noIso[jl1]
+            self.EleID_WP90_1[0] = entry.Electron_mvaFall17V2noIso_WP90[jl1]
+            self.EleID_WPL_1[0] = entry.Electron_mvaFall17V2noIso_WPL[jl1]
+
+            if entry.Muon_looseId[jl2]: self.MuID_2[0] = 1
+            if entry.Muon_mediumId[jl2]: self.MuID_2[0] = 2
+            if entry.Muon_tightId[jl2]: self.MuID_2[0] = 3
+
             #self.Electron_mvaFall17V2noIso_WP90_1[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl1]
             ''' 
             self.looseId_2[0]   = entry.Muon_looseId[jl2] 
@@ -3401,6 +3626,15 @@ class outTuple() :
             self.dZ_1[0]   = entry.Electron_dz[jl1]
             self.d0_2[0]   = entry.Tau_dxy[jl2]
             self.dZ_2[0]   = entry.Tau_dz[jl2]
+
+            self.EleID_1[0] = entry.Electron_mvaFall17V2noIso[jl1]
+            self.EleID_WP90_1[0] = entry.Electron_mvaFall17V2noIso_WP90[jl1]
+            self.EleID_WPL_1[0] = entry.Electron_mvaFall17V2noIso_WPL[jl1]
+
+            self.TauIDe_2[0] = entry.Tau_idDeepTau2017v2p1VSe[jl2]
+            self.TauIDm_2[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl2]
+            self.TauIDj_2[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl2]
+
             #self.Electron_mvaFall17V2noIso_WP90_1[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl1]    
 
             if SystIndex ==0 and  isMC: 
@@ -3442,6 +3676,14 @@ class outTuple() :
             self.dZ_1[0]   = entry.Muon_dz[jl1]
             self.d0_2[0]   = entry.Muon_dxy[jl2]
             self.dZ_2[0]   = entry.Muon_dz[jl2]
+
+            if entry.Muon_looseId[jl1]: self.MuID_1[0] = 1
+            if entry.Muon_mediumId[jl1]: self.MuID_1[0] = 2
+            if entry.Muon_tightId[jl1]: self.MuID_1[0] = 3
+            if entry.Muon_looseId[jl2]: self.MuID_2[0] = 1
+            if entry.Muon_mediumId[jl2]: self.MuID_2[0] = 2
+            if entry.Muon_tightId[jl2]: self.MuID_2[0] = 3
+
             '''self.looseId_1[0]   = entry.Muon_looseId[jl1] 
             self.looseId_2[0]   = entry.Muon_looseId[jl2] 
             self.tightId_1[0]        = entry.Muon_tightId[jl1]
@@ -3507,6 +3749,15 @@ class outTuple() :
             self.dZ_1[0]   = entry.Muon_dz[jl1]
             self.d0_2[0]   = entry.Tau_dxy[jl2]
             self.dZ_2[0]   = entry.Tau_dz[jl2]
+
+            if entry.Muon_looseId[jl1]: self.MuID_1[0] = 1
+            if entry.Muon_mediumId[jl1]: self.MuID_1[0] = 2
+            if entry.Muon_tightId[jl1]: self.MuID_1[0] = 3
+
+            self.TauIDe_2[0] = entry.Tau_idDeepTau2017v2p1VSe[jl2]
+            self.TauIDm_2[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl2]
+            self.TauIDj_2[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl2]
+
             '''self.tightId_1[0]      = entry.Muon_tightId[jl1]
             self.mediumId_1[0]       = entry.Muon_mediumId[jl1]
             self.mediumPromptId_1[0]   = entry.Muon_mediumPromptId[jl1]
@@ -3559,6 +3810,13 @@ class outTuple() :
             self.idMVAnewDM2017v2_1[0] = ord(chr(entry.Tau_idMVAnewDM2017v2[jl1]))
             self.rawMVAnewDM2017v2_1[0] = entry.Tau_rawMVAnewDM2017v2[jl1]
             '''
+            self.TauIDe_1[0] = entry.Tau_idDeepTau2017v2p1VSe[jl1]
+            self.TauIDm_1[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl1]
+            self.TauIDj_1[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl1]
+            self.TauIDe_2[0] = entry.Tau_idDeepTau2017v2p1VSe[jl2]
+            self.TauIDm_2[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl2]
+            self.TauIDj_2[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl2]
+
             if SystIndex ==0 and isMC: 
                     self.pt_uncor_1[0] = tPt[jl1]
                     self.m_uncor_1[0] = tMass[jl1]
@@ -3710,6 +3968,8 @@ class outTuple() :
             self.dZ_3[0]   = entry.Electron_dz[jl3]
             #self.Electron_mvaFall17V2noIso_WP90_3[0]  = entry.Electron_mvaFall17V2noIso_WP90[jl3]
             self.EleID_3[0] = entry.Electron_mvaFall17V2noIso[jl3]
+            self.EleID_WP90_3[0] = entry.Electron_mvaFall17V2noIso_WP90[jl3]
+            self.EleID_WPL_3[0] = entry.Electron_mvaFall17V2noIso_WPL[jl3]
             #print(self.EleID_3[0])
             ''' 
             self.looseId_3[0]   = entry.Electron_looseId[jl3] 
@@ -3774,6 +4034,10 @@ class outTuple() :
             self.idMVAnewDM2017v2_3[0] = ord(chr(entry.Tau_idMVAnewDM2017v2[jl3]))
             self.rawMVAnewDM2017v2_3[0] = entry.Tau_rawMVAnewDM2017v2[jl3]
             '''
+            self.TauIDe_3[0] = entry.Tau_idDeepTau2017v2p1VSe[jl3]
+            self.TauIDm_3[0] = entry.Tau_idDeepTau2017v2p1VSmu[jl3]
+            self.TauIDj_3[0] = entry.Tau_idDeepTau2017v2p1VSjet[jl3]
+
             if SystIndex ==0 and  isMC :
                 self.pt_uncor_3[0] = tPt[jl3]
                 self.m_uncor_3[0] = tMass[jl3]
@@ -4107,12 +4371,11 @@ class outTuple() :
         self.nbtagL[0] = len(bJetListL)
         self.nbtagM[0] = len(bJetListM)
         self.nbtagT[0] = len(bJetListT)
-        for ifl in range(len(jetListPt)) :
+        for ifl in range(min(len(jetListPt), len(self.jflavour))):
             self.jflavour[ifl]  = jetListFlav[ifl]
             self.jeta[ifl]  = jetListEta[ifl]
             self.jpt[ifl]  = jetListPt[ifl]
             self.btagDeep[ifl] = bTagListDeep[ifl]
-
 
         '''
             if len(jetList) > 0 :

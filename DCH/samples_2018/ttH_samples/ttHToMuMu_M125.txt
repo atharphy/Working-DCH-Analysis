@@ -1,0 +1,2 @@
+root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18NanoAODv9/ttHToMuMu_M125_TuneCP5_13TeV-powheg-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2550000/D41A5AFC-EC31-A64F-9E87-6F1C22ED6DCB.root
+root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18NanoAODv9/ttHToMuMu_M125_TuneCP5_13TeV-powheg-pythia8/NANOAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2550000/21B3B016-DD15-D547-9A39-E6D8963FE7A9.root

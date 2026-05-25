@@ -1,0 +1,10 @@
+executable = /afs/cern.ch/user/a/atahmad/guru_framework/CMSSW_13_0_10/src/DCH-framework/DCH/jobs_failed/2018/MC/TTToSemiLeptonic/condorjob_failed.sh
+arguments  = $(ProcId)
+output     = /afs/cern.ch/user/a/atahmad/guru_framework/CMSSW_13_0_10/src/DCH-framework/DCH/jobs_failed/2018/MC/TTToSemiLeptonic/condorjob.$(ClusterId).$(ProcId).out
+error      = /afs/cern.ch/user/a/atahmad/guru_framework/CMSSW_13_0_10/src/DCH-framework/DCH/jobs_failed/2018/MC/TTToSemiLeptonic/condorjob.$(ClusterId).$(ProcId).err
+log        = /afs/cern.ch/user/a/atahmad/guru_framework/CMSSW_13_0_10/src/DCH-framework/DCH/jobs_failed/2018/MC/TTToSemiLeptonic/condorjob.$(ClusterId).log
++JobFlavour = "testmatch"
+RequestCpus = 2
+request_memory = 4GB
+request_disk = 4GB
+queue 2

@@ -1,0 +1,9 @@
+           bad.append((path, reason))
+               print()
+                   print("=== Summary ===")
+                       if bad:
+                                   print( Invalid ROOT files: {len(bad)}")
+        for p, r in bad:
+            print(f"   - {p}  -->  {r}")
+    else:
+        print("f"
